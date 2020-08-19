@@ -1,0 +1,21 @@
+{
+  "name": "cdk_extensions",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@bazel/bazelisk": "latest",
+    "@bazel/buildifier": "latest",
+    "@bazel/ibazel": "latest",
+    "@bazel/typescript": "^2.0.3",
+    "@typescript-eslint/eslint-plugin": "^3.9.1",
+    "@typescript-eslint/parser": "^3.9.1",
+    "eslint": "^7.7.0",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {},
+  "scripts": {
+    "build": "bazel build //...",
+    "test": "bazel test //...",
+    "lint": "eslint '**/*.ts'"
+  }
+}
