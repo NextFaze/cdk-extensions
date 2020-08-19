@@ -1,21 +1,54 @@
 {
   "name": "cdk_extensions",
+  "description": "One stop shop for most commonly used cdk (Cloud Development Kit) extensions",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
   "devDependencies": {
     "@bazel/bazelisk": "latest",
     "@bazel/buildifier": "latest",
     "@bazel/ibazel": "latest",
+    "@bazel/rollup": "^2.0.3",
     "@bazel/typescript": "^2.0.3",
+    "@commitlint/config-conventional": "^9.1.2",
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@types/node": "14.6.0",
     "@typescript-eslint/eslint-plugin": "^3.9.1",
     "@typescript-eslint/parser": "^3.9.1",
+    "commitlint": "^9.0.1",
     "eslint": "^7.7.0",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "rollup": "^2.26.4",
+    "rollup-plugin-auto-external": "^2.0.0",
     "typescript": "^3.9.7"
   },
   "dependencies": {},
   "scripts": {
-    "build": "bazel build //...",
-    "test": "bazel test //...",
-    "lint": "eslint '**/*.ts'"
+    "build": "bazel build ${TARGET:-//...}",
+    "build:watch": "ibazel build ${TARGET:-//...}",
+    "test": "bazel test ${TARGET:-//...}",
+    "test:watch": "ibazel test ${TARGET:-//...}",
+    "lint": "eslint '**/*.ts' '**/*.js'",
+    "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
+    "bazel:lint": "npm run bazel:format -- --lint=warn",
+    "bazel:lint-fix": "npm run bazel:format -- --lint=fix",
+    "format:check": "prettier --check ./**/*.ts",
+    "format:write": "prettier --write ./**/*.ts",
+    "clean": "bazel clean",
+    "clean:deep": "bazel clean --expunge"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NextFaze/cdk-extensions"
+  },
+  "homepage": "https://github.com/NextFaze/cdk-extensions/blob/master/README.md",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }

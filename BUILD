@@ -1,5 +1,7 @@
 # Add rules here to build your software
 # See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
 
-
-exports_files(["tsconfig.json"], visibility = ["//visibility:public"])
+exports_files(
+    ["tsconfig.json", "tools/defaults.bzl"],
+    visibility = ["//visibility:public"],
+)
