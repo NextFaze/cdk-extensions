@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cdk-extensions/all passes snapshot tests 1`] = `"Hello snapshots"`;

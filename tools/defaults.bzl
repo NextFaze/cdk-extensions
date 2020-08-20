@@ -15,7 +15,7 @@ def setup_ts_build(name, deps = [], **kwargs):
             [
                 "**/*.ts",
             ],
-            exclude = ["**/*.spec.ts"],
+            exclude = ["**/*.test.ts"],
         ),
         tsconfig = "//:tsconfig.json",
         deps = deps + [
