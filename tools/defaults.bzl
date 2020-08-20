@@ -24,7 +24,6 @@ def setup_ts_build(name, deps = [], **kwargs):
         **kwargs
     )
 
-
 def gen_bundle(name, deps, dir_name = "", srcs = []):
     """Generate tar containing bundled js.
         index.ts must exist next to BUILD file
