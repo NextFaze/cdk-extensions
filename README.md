@@ -1,2 +1,3 @@
-# cdk-extensions
-The one-stop shop for all AWS CDK extensions 
+# CDK Extensions
+
+The one-stop shop for most common AWS CDK extensions
