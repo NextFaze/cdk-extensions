@@ -1,0 +1,27 @@
+{
+  "name": "@cdkx/web-application",
+  "version": "0.1.0",
+  "description": "Construct to setup hosting for static web application",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NextFaze/cdk-extensions/packages/web-application"
+  },
+  "peerDependencies": {
+    "@aws-cdk/core": "^1.60.0",
+    "@aws-cdk/aws-cloudfront": "^1.60.0",
+    "@aws-cdk/aws-route53": "^1.60.0",
+    "@aws-cdk/aws-s3": "^1.60.0",
+    "@aws-cdk/aws-certificatemanager": "^1.60.0"
+  },
+  "keywords": [
+    "cdk",
+    "cdkx",
+    "web",
+    "spa",
+    "hosting",
+    "aws"
+  ],
+  "author": "Rushi Patel <rpatel@nextfaze.com>",
+  "license": "MIT"
+}
