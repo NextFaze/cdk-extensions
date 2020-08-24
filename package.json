@@ -3,7 +3,6 @@
   "description": "One stop shop for most commonly used cdk (Cloud Development Kit) extensions",
   "version": "0.1.0",
   "private": true,
-  "main": "index.js",
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
@@ -25,6 +24,8 @@
     "eslint": "^7.7.0",
     "husky": "^4.2.5",
     "jest-cli": "^26.4.1",
+    "jest-haste-map": "^26.3.0",
+    "patch-package": "^6.2.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "rollup": "^2.26.4",
@@ -41,6 +42,8 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
+    "// patch": "patch for https://github.com/facebook/jest/pull/9351",
+    "postinstall": "node ./node_modules/patch-package/dist/index.js",
     "build": "bazel build ${TARGET:-//...}",
     "build:watch": "ibazel build ${TARGET:-//...}",
     "test": "bazel test ${TARGET:-//...}",

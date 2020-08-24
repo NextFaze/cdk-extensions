@@ -10,7 +10,7 @@ def jest_test(name, deps = [], jest_config = "//:jest.config.js", **kwargs):
     ]
     templated_args.extend(["--config", "$(rootpath %s)" % jest_config])
     srcs = native.glob(
-        ["**/*.test.ts"],
+        ["**/*.test.js", "**/*.spec.js"],
     )
     snapshots = native.glob(
         ["__snapshots__/*.snap"],
@@ -18,7 +18,7 @@ def jest_test(name, deps = [], jest_config = "//:jest.config.js", **kwargs):
     for src in srcs:
         templated_args.extend(["--runTestsByPath", "$(rootpath %s)" % src])
 
-    data = [jest_config] + srcs + deps + ["//:jest-reporter.js", "//:babel.config.js"] + snapshots
+    data = [jest_config] + srcs + deps + ["//:jest-reporter.js", "//:babel.config.js", "@npm//@babel/preset-env"] + snapshots
     _jest_test(
         name = name,
         data = data,
