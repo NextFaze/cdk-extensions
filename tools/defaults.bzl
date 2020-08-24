@@ -15,11 +15,39 @@ def setup_ts_build(name, deps = [], **kwargs):
             [
                 "**/*.ts",
             ],
-            exclude = ["**/*.test.ts"],
+            exclude = ["**/*.test.ts", "**/*.spec.ts"],
         ),
         tsconfig = "//:tsconfig.json",
         deps = deps + [
-            "@npm//:node_modules",
+            "@npm//@aws-cdk/core",
+            "@npm//change-case",
+            "@npm//@types/node",
+
+        ],
+        **kwargs
+    )
+
+def setup_ts_test(name, deps = [], **kwargs):
+    """ Sets up default test configuration to compile ts sources with npm hosted deps        
+        @param name - name of the target (required)
+        @param deps - list of internal targets that this build relies on
+                    - external npm deps is already been taken care of
+    """
+
+    ts_library(
+        name = name,
+        srcs = native.glob(
+            [
+                "**/*.spec.ts",
+                "**/*.test.ts"
+            ],
+        ),
+        tsconfig = "//:tsconfig.json",
+        deps = deps + [
+            "@npm//@types/node",
+            "@npm//@types/jest",
+            "@npm//@aws-cdk/core",
+            "@npm//@aws-cdk/assert",
         ],
         **kwargs
     )
