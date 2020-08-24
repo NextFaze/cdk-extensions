@@ -7,6 +7,7 @@ import { createOriginAccessIdentity } from './facades/create-origin-access-ident
 import { createOriginBucket } from './facades/create-origin-bucket';
 import { createCloudfrontWebDistribution } from './facades/create-cloudfront-web-distribution';
 import { getViewerCertificate } from './facades/get-viewer-certificate';
+import { addCnameRecords } from './facades/add-cname-records';
 
 export interface IRequestCertificateProps {
   domainName: string;
@@ -34,10 +35,12 @@ export class WebApplication extends Construct {
     const identity = createOriginAccessIdentity.call(this);
     const viewerCertificate = getViewerCertificate.call(this);
 
-    createCloudfrontWebDistribution.call(this, {
+    const distribution = createCloudfrontWebDistribution.call(this, {
       s3BucketSource: originBucket,
       originAccessIdentity: identity,
       viewerCertificate,
     });
+
+    addCnameRecords.call(this, { distribution });
   }
 }

@@ -14,6 +14,9 @@
     "@aws-cdk/aws-s3": "^1.60.0",
     "@aws-cdk/aws-certificatemanager": "^1.60.0"
   },
+  "dependencies": {
+    "change-case": "^4.1.1"
+  },
   "keywords": [
     "cdk",
     "cdkx",
