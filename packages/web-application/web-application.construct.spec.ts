@@ -74,6 +74,10 @@ describe('WebApplication', () => {
       });
     });
 
+    it('should match snapshot', () => {
+      expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    });
+
     it('should not create record sets', () => {
       expectCDK(stack).notTo(haveResource('AWS::Route53::RecordSet'));
     });
