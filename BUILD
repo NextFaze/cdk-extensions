@@ -7,6 +7,8 @@ exports_files(
      "tools/jest.bzl", 
      "babel.config.js", 
      "jest.config.js", 
-     "jest-reporter.js"],
+     "jest-reporter.js", 
+     "LICENSE",
+     "README.md"],
     visibility = ["//visibility:public"],
 )

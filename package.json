@@ -3,6 +3,7 @@
   "description": "One stop shop for most commonly used cdk (Cloud Development Kit) extensions",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
@@ -57,6 +58,8 @@
     "bazel:lint-fix": "npm run bazel:format -- --lint=fix",
     "format:check": "prettier --check ./**/*.ts",
     "format:write": "prettier --write ./**/*.ts",
+    "pack:all": "./tools/release.sh pack",
+    "publish:all": "./tools/release.sh publish",
     "clean": "bazel clean",
     "clean:deep": "bazel clean --expunge"
   },

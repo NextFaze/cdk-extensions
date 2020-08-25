@@ -9,6 +9,7 @@ process.on('uncaughtException', function () {
 
 const BUILD_SCM_HASH = _exec(`git rev-parse HEAD`);
 console.log(`BUILD_SCM_HASH ${BUILD_SCM_HASH}`);
+console.log(`BUILD_SCM_VERSION 0.1.0`);
 
 const currentTag = _exec(`git tag`);
 if (!currentTag) {
@@ -17,19 +18,18 @@ if (!currentTag) {
   console.error(
     '       git fetch git@github.com:NextFaze/cdk-extensions.git --tags'
   );
-  return;
+} else {
+  const BUILD_SCM_VERSION_RAW = _exec(
+    `git describe --match v[0-9].[0-9].[0-9]* --abbrev=7 --tags HEAD`
+  );
+
+  const BUILD_SCM_VERSION = BUILD_SCM_VERSION_RAW.replace(
+    /-([0-9]+)-g/,
+    '+$1.sha-'
+  );
+
+  console.log(`BUILD_SCM_VERSION ${BUILD_SCM_VERSION}`);
 }
-
-const BUILD_SCM_VERSION_RAW = _exec(
-  `git describe --match v[0-9].[0-9].[0-9]* --abbrev=7 --tags HEAD`
-);
-
-const BUILD_SCM_VERSION = BUILD_SCM_VERSION_RAW.replace(
-  /-([0-9]+)-g/,
-  '+$1.sha-'
-);
-
-console.log(`BUILD_SCM_VERSION ${BUILD_SCM_VERSION}`);
 
 function _exec(command) {
   return execSync(command).toString().trim();

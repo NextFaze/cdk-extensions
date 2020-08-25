@@ -1,4 +1,6 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//:tools/defaults.bzl", "setup_ts_build", "setup_ts_test")
+load("//:tools/pkg.bzl", "cdkx_package")
 load("//:tools/jest.bzl", "jest_test")
 
 package(default_visibility = ["//visibility:public"])
@@ -31,4 +33,12 @@ jest_test(
     deps = [
         ":test_library",
     ],
+)
+
+cdkx_package(
+    name = "web-application",
+    readme_md = "README.md",
+    deps = [
+        ":library"
+    ]
 )
