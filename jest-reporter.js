@@ -4,7 +4,7 @@ class BazelReporter {
       console.log(`================================================================================
       
       Snapshot failed, you can update the snapshot by running
-      bazel run ${process.env['TEST_TARGET'].replace(/_bin$/, '')}.update
+      npx bazel run ${process.env['TEST_TARGET'].replace(/_bin$/, '')}.update
       `);
     }
   }

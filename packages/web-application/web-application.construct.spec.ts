@@ -5,6 +5,7 @@ import {
   expect as expectCDK,
   countResources,
   haveResource,
+  SynthUtils,
 } from '@aws-cdk/assert';
 import { DOMAIN_NAME_REGISTRAR } from './constants';
 import { WebApplication } from './web-application.construct';
@@ -30,7 +31,11 @@ describe('WebApplication', () => {
       });
     });
 
-    it('should create', () => {
+    it('should match snapshot', () => {
+      expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    });
+
+    it('should create required resources', () => {
       expectCDK(stack).to(countResources('AWS::S3::Bucket', 1));
       expectCDK(stack).to(countResources('AWS::CloudFront::Distribution', 1));
     });
