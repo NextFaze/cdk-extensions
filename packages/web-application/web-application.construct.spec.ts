@@ -9,6 +9,7 @@ import {
 } from '@aws-cdk/assert';
 import { DOMAIN_NAME_REGISTRAR } from './constants';
 import { WebApplication } from './web-application.construct';
+import { User } from '@aws-cdk/aws-iam';
 
 describe('WebApplication', () => {
   let stack: Stack;
@@ -80,6 +81,53 @@ describe('WebApplication', () => {
 
     it('should not create record sets', () => {
       expectCDK(stack).notTo(haveResource('AWS::Route53::RecordSet'));
+    });
+  });
+
+  describe('with dynamic parameter', () => {
+    beforeAll(() => {
+      stack = new Stack();
+      const hostedZone = new HostedZone(stack, 'HostedZone', {
+        zoneName: 'example.com',
+      });
+      new WebApplication(stack, 'WebApplication', {
+        hostedZone,
+        aliases: ['app.example.com', 'www.example.com'],
+        certificate: new DnsValidatedCertificate(stack, 'Certificate', {
+          domainName: 'example.com',
+          hostedZone,
+          subjectAlternativeNames: ['*.example.com'],
+        }),
+        dynamicParameter: {
+          applicationUser: new User(stack, 'User'),
+          initialValue: JSON.stringify({}),
+        },
+      });
+    });
+
+    it('should match snapshot', () => {
+      expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    });
+
+    it('should create config param and policy', () => {
+      expectCDK(stack).to(haveResource('AWS::SSM::Parameter'));
+      expectCDK(stack).to(
+        haveResource('AWS::IAM::Policy', {
+          PolicyDocument: {
+            Statement: [
+              {
+                Action: [
+                  'ssm:DescribeParameters',
+                  'ssm:GetParameters',
+                  'ssm:GetParameter',
+                  'ssm:GetParameterHistory',
+                ],
+                Effect: 'Allow',
+              },
+            ],
+          },
+        })
+      );
     });
   });
 });

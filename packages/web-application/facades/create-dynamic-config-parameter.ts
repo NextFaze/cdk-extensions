@@ -13,7 +13,7 @@ export function createDynamicConfigParameter(
     return;
   }
 
-  return new StringParameter(this, 'ConfigParameter', {
+  const param = new StringParameter(this, 'ConfigParameter', {
     stringValue: dynamicParameter.initialValue,
     tier: ParameterTier.INTELLIGENT_TIERING,
     description: `Dynamic Config Parameter for ${aliases[0]}`,
@@ -21,4 +21,7 @@ export function createDynamicConfigParameter(
     type: ParameterType.STRING,
     parameterName: dynamicParameter.parameterName,
   });
+
+  param.grantRead(dynamicParameter.applicationUser);
+  return param;
 }

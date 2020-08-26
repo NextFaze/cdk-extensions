@@ -10,7 +10,9 @@ setup_ts_build(
         "@npm//@aws-cdk/aws-route53",
         "@npm//@aws-cdk/aws-certificatemanager",
         "@npm//@aws-cdk/aws-cloudfront",
-        "@npm//@aws-cdk/aws-s3"
+        "@npm//@aws-cdk/aws-s3",
+        "@npm//@aws-cdk/aws-ssm",
+        "@npm//@aws-cdk/aws-iam"
     ],
 )
 
@@ -20,6 +22,7 @@ setup_ts_test(
         ":library",
         "@npm//@aws-cdk/aws-route53",
         "@npm//@aws-cdk/aws-certificatemanager",
+        "@npm//@aws-cdk/aws-iam"
     ],
 )
 

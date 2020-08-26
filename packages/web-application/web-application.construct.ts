@@ -10,6 +10,7 @@ import { createCloudfrontWebDistribution } from './facades/create-cloudfront-web
 import { getViewerCertificate } from './facades/get-viewer-certificate';
 import { addCnameRecords } from './facades/add-cname-records';
 import { createDynamicConfigParameter } from './facades/create-dynamic-config-parameter';
+import { User } from '@aws-cdk/aws-iam';
 
 export interface IRequestCertificateProps {
   domainName: string;
@@ -24,6 +25,7 @@ export interface IWebApplicationProps {
   errorRootObject?: string;
   cloudfrontPriceClass?: PriceClass;
   dynamicParameter?: {
+    applicationUser: User;
     parameterName?: string;
     initialValue: string;
     allowedPattern?: string;

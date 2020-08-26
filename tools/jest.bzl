@@ -30,6 +30,6 @@ def jest_test(name, deps = [], jest_config = "//:jest.config.js", **kwargs):
     jest(
         name = "%s.update" % name,
         data = data,
-        templated_args = templated_args + ["-u", "--detectOpenHandles"],
+        templated_args = templated_args + ["-u"],
         **kwargs
     )
