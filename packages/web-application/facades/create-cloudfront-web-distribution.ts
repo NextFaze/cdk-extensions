@@ -1,4 +1,7 @@
-import { WebApplication } from '../web-application.construct';
+import {
+  WebApplication,
+  IWebApplicationProps,
+} from '../web-application.construct';
 import {
   CloudFrontWebDistribution,
   ViewerProtocolPolicy,
@@ -8,7 +11,8 @@ import {
 import { Bucket } from '@aws-cdk/aws-s3';
 
 export function createCloudfrontWebDistribution(
-  this: WebApplication,
+  scope: WebApplication,
+  props: IWebApplicationProps,
   {
     s3BucketSource,
     originAccessIdentity,
@@ -19,9 +23,9 @@ export function createCloudfrontWebDistribution(
     viewerCertificate: ViewerCertificate;
   }
 ): CloudFrontWebDistribution {
-  const { defaultRootObject, cloudfrontPriceClass, aliases } = this.props;
+  const { defaultRootObject, cloudfrontPriceClass, aliases } = props;
 
-  return new CloudFrontWebDistribution(this, 'CloudFrontWebDistribution', {
+  return new CloudFrontWebDistribution(scope, 'CloudFrontWebDistribution', {
     originConfigs: [
       {
         s3OriginSource: {

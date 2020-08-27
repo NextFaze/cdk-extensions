@@ -1,12 +1,16 @@
-import { WebApplication } from '../web-application.construct';
+import {
+  WebApplication,
+  IWebApplicationProps,
+} from '../web-application.construct';
 import { OriginAccessIdentity } from '@aws-cdk/aws-cloudfront';
 
 export function createOriginAccessIdentity(
-  this: WebApplication
+  scope: WebApplication,
+  props: IWebApplicationProps
 ): OriginAccessIdentity {
-  return new OriginAccessIdentity(this, 'OriginAccessIdentity', {
+  return new OriginAccessIdentity(scope, 'OriginAccessIdentity', {
     comment: `Origin Access Identity for ${
-      this.props.aliases[0] || 'Web Application'
+      props.aliases[0] || 'Web Application'
     }`,
   });
 }

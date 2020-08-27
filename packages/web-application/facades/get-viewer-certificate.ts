@@ -5,6 +5,7 @@ import {
 import {
   WebApplication,
   IRequestCertificateProps,
+  IWebApplicationProps,
 } from '../web-application.construct';
 import {
   ViewerCertificate,
@@ -12,17 +13,24 @@ import {
   SecurityPolicyProtocol,
 } from '@aws-cdk/aws-cloudfront';
 
-export function getViewerCertificate(this: WebApplication): ViewerCertificate {
-  const { certificate, hostedZone, aliases } = this.props;
+export function getViewerCertificate(
+  scope: WebApplication,
+  props: IWebApplicationProps
+): ViewerCertificate {
+  const { certificate, hostedZone, aliases } = props;
 
   let viewerCertificate = certificate as ICertificate;
   if (!isICertificate(certificate)) {
-    viewerCertificate = new DnsValidatedCertificate(this, 'ViewerCertificate', {
-      domainName: certificate.domainName,
-      hostedZone: hostedZone,
-      // cloudfront require the region to be us-east-1 as of 2020, Aug 23.
-      region: 'us-east-1',
-    });
+    viewerCertificate = new DnsValidatedCertificate(
+      scope,
+      'ViewerCertificate',
+      {
+        domainName: certificate.domainName,
+        hostedZone: hostedZone,
+        // cloudfront require the region to be us-east-1 as of 2020, Aug 23.
+        region: 'us-east-1',
+      }
+    );
   }
 
   return ViewerCertificate.fromAcmCertificate(viewerCertificate, {

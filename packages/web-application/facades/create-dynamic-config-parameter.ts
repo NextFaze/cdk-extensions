@@ -1,4 +1,7 @@
-import { WebApplication } from '../web-application.construct';
+import {
+  WebApplication,
+  IWebApplicationProps,
+} from '../web-application.construct';
 import {
   StringParameter,
   ParameterTier,
@@ -6,14 +9,15 @@ import {
 } from '@aws-cdk/aws-ssm';
 
 export function createDynamicConfigParameter(
-  this: WebApplication
+  scope: WebApplication,
+  props: IWebApplicationProps
 ): StringParameter | undefined {
-  const { dynamicParameter, aliases } = this.props;
+  const { dynamicParameter, aliases } = props;
   if (!dynamicParameter) {
     return;
   }
 
-  const param = new StringParameter(this, 'ConfigParameter', {
+  const param = new StringParameter(scope, 'ConfigParameter', {
     stringValue: dynamicParameter.initialValue,
     tier: ParameterTier.INTELLIGENT_TIERING,
     description: `Dynamic Config Parameter for ${aliases[0]}`,

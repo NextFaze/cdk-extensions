@@ -41,19 +41,19 @@ export class WebApplication extends Construct {
   ) {
     super(scope, id);
 
-    const originBucket = createOriginBucket.call(this);
-    const identity = createOriginAccessIdentity.call(this);
+    const originBucket = createOriginBucket(this, props);
+    const identity = createOriginAccessIdentity(this, props);
     originBucket.grantRead(identity);
 
-    const viewerCertificate = getViewerCertificate.call(this);
-    const distribution = createCloudfrontWebDistribution.call(this, {
+    const viewerCertificate = getViewerCertificate(this, props);
+    const distribution = createCloudfrontWebDistribution(this, props, {
       s3BucketSource: originBucket,
       originAccessIdentity: identity,
       viewerCertificate,
     });
 
-    this.configParameter = createDynamicConfigParameter.call(this);
+    this.configParameter = createDynamicConfigParameter(this, props);
 
-    addCnameRecords.call(this, { distribution });
+    addCnameRecords(this, props, { distribution });
   }
 }
