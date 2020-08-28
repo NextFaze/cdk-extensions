@@ -4,3 +4,5 @@ bazel-out
 node_modules
 *.tgz
 *.log
+
+.env
