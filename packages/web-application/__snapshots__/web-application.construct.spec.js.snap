@@ -1,0 +1,703 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WebApplication with AWS registrar should match snapshot 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2ArtifactHash652C125C": Object {
+      "Description": "Artifact hash for asset \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
+      "Type": "String",
+    },
+    "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3BucketFCCD3A76": Object {
+      "Description": "S3 bucket for asset \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
+      "Type": "String",
+    },
+    "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3VersionKey07AF06B6": Object {
+      "Description": "S3 key for asset version \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "CertificateCertificateRequestorFunction5E845413": Object {
+      "DependsOn": Array [
+        "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC",
+        "CertificateCertificateRequestorFunctionServiceRoleC04C13DA",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3BucketFCCD3A76",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3VersionKey07AF06B6",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3VersionKey07AF06B6",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.certificateRequestHandler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CertificateCertificateRequestorFunctionServiceRoleC04C13DA",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CertificateCertificateRequestorFunctionServiceRoleC04C13DA": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "acm:RequestCertificate",
+                "acm:DescribeCertificate",
+                "acm:DeleteCertificate",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "route53:GetChange",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "route53:changeResourceRecordSets",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":route53:::hostedzone/",
+                    Object {
+                      "Ref": "HostedZoneDB99F866",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC",
+        "Roles": Array [
+          Object {
+            "Ref": "CertificateCertificateRequestorFunctionServiceRoleC04C13DA",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CertificateCertificateRequestorResource2890C6B7": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "DomainName": "example.com",
+        "HostedZoneId": Object {
+          "Ref": "HostedZoneDB99F866",
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CertificateCertificateRequestorFunction5E845413",
+            "Arn",
+          ],
+        },
+        "SubjectAlternativeNames": Array [
+          "*.example.com",
+        ],
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "HostedZoneDB99F866": Object {
+      "Properties": Object {
+        "Name": "example.com.",
+      },
+      "Type": "AWS::Route53::HostedZone",
+    },
+    "WebApplicationAppExampleComCnameRecord9BE3A5DF": Object {
+      "Properties": Object {
+        "HostedZoneId": Object {
+          "Ref": "HostedZoneDB99F866",
+        },
+        "Name": "app.example.com.",
+        "ResourceRecords": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "WebApplicationCloudFrontWebDistributionCFDistribution39F2BE0B",
+              "DomainName",
+            ],
+          },
+        ],
+        "TTL": "1800",
+        "Type": "CNAME",
+      },
+      "Type": "AWS::Route53::RecordSet",
+    },
+    "WebApplicationCloudFrontWebDistributionCFDistribution39F2BE0B": Object {
+      "Properties": Object {
+        "DistributionConfig": Object {
+          "Aliases": Array [
+            "app.example.com",
+            "www.example.com",
+          ],
+          "Comment": "Cloudfront Distribution for app.example.com",
+          "CustomErrorResponses": Array [
+            Object {
+              "ErrorCode": 404,
+              "ResponseCode": 200,
+              "ResponsePagePath": "/index.html",
+            },
+          ],
+          "DefaultCacheBehavior": Object {
+            "AllowedMethods": Array [
+              "GET",
+              "HEAD",
+            ],
+            "CachedMethods": Array [
+              "GET",
+              "HEAD",
+            ],
+            "Compress": true,
+            "ForwardedValues": Object {
+              "Cookies": Object {
+                "Forward": "none",
+              },
+              "QueryString": true,
+            },
+            "TargetOriginId": "origin1",
+            "ViewerProtocolPolicy": "redirect-to-https",
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": Array [
+            Object {
+              "ConnectionAttempts": 3,
+              "ConnectionTimeout": 10,
+              "DomainName": Object {
+                "Fn::GetAtt": Array [
+                  "WebApplicationOriginBucket7D83F54A",
+                  "RegionalDomainName",
+                ],
+              },
+              "Id": "origin1",
+              "S3OriginConfig": Object {
+                "OriginAccessIdentity": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "origin-access-identity/cloudfront/",
+                      Object {
+                        "Ref": "WebApplicationOriginAccessIdentityC8F81A32",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "PriceClass": "PriceClass_100",
+          "ViewerCertificate": Object {
+            "AcmCertificateArn": Object {
+              "Fn::GetAtt": Array [
+                "CertificateCertificateRequestorResource2890C6B7",
+                "Arn",
+              ],
+            },
+            "MinimumProtocolVersion": "TLSv1.2_2019",
+            "SslSupportMethod": "sni-only",
+          },
+        },
+      },
+      "Type": "AWS::CloudFront::Distribution",
+    },
+    "WebApplicationOriginAccessIdentityC8F81A32": Object {
+      "Properties": Object {
+        "CloudFrontOriginAccessIdentityConfig": Object {
+          "Comment": "Origin Access Identity for app.example.com",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "WebApplicationOriginBucket7D83F54A": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "WebsiteConfiguration": Object {
+          "ErrorDocument": "index.html",
+          "IndexDocument": "index.html",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "WebApplicationOriginBucketPolicy2EBE7FD1": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "WebApplicationOriginBucket7D83F54A",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "CanonicalUser": Object {
+                  "Fn::GetAtt": Array [
+                    "WebApplicationOriginAccessIdentityC8F81A32",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "WebApplicationOriginBucket7D83F54A",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "WebApplicationOriginBucket7D83F54A",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "WebApplicationWwwExampleComCnameRecordAE6C2C55": Object {
+      "Properties": Object {
+        "HostedZoneId": Object {
+          "Ref": "HostedZoneDB99F866",
+        },
+        "Name": "www.example.com.",
+        "ResourceRecords": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "WebApplicationCloudFrontWebDistributionCFDistribution39F2BE0B",
+              "DomainName",
+            ],
+          },
+        ],
+        "TTL": "1800",
+        "Type": "CNAME",
+      },
+      "Type": "AWS::Route53::RecordSet",
+    },
+  },
+}
+`;
+
+exports[`WebApplication with no registrar should match snapshot 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2ArtifactHash652C125C": Object {
+      "Description": "Artifact hash for asset \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
+      "Type": "String",
+    },
+    "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3BucketFCCD3A76": Object {
+      "Description": "S3 bucket for asset \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
+      "Type": "String",
+    },
+    "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3VersionKey07AF06B6": Object {
+      "Description": "S3 key for asset version \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "CertificateCertificateRequestorFunction5E845413": Object {
+      "DependsOn": Array [
+        "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC",
+        "CertificateCertificateRequestorFunctionServiceRoleC04C13DA",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3BucketFCCD3A76",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3VersionKey07AF06B6",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2S3VersionKey07AF06B6",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.certificateRequestHandler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CertificateCertificateRequestorFunctionServiceRoleC04C13DA",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CertificateCertificateRequestorFunctionServiceRoleC04C13DA": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "acm:RequestCertificate",
+                "acm:DescribeCertificate",
+                "acm:DeleteCertificate",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "route53:GetChange",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "route53:changeResourceRecordSets",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":route53:::hostedzone/",
+                    Object {
+                      "Ref": "HostedZoneDB99F866",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC",
+        "Roles": Array [
+          Object {
+            "Ref": "CertificateCertificateRequestorFunctionServiceRoleC04C13DA",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CertificateCertificateRequestorResource2890C6B7": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "DomainName": "example.com",
+        "HostedZoneId": Object {
+          "Ref": "HostedZoneDB99F866",
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CertificateCertificateRequestorFunction5E845413",
+            "Arn",
+          ],
+        },
+        "SubjectAlternativeNames": Array [
+          "*.example.com",
+        ],
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "HostedZoneDB99F866": Object {
+      "Properties": Object {
+        "Name": "example.com.",
+      },
+      "Type": "AWS::Route53::HostedZone",
+    },
+    "WebApplicationCloudFrontWebDistributionCFDistribution39F2BE0B": Object {
+      "Properties": Object {
+        "DistributionConfig": Object {
+          "Aliases": Array [
+            "app.example.com",
+            "www.example.com",
+          ],
+          "Comment": "Cloudfront Distribution for app.example.com",
+          "CustomErrorResponses": Array [
+            Object {
+              "ErrorCode": 404,
+              "ResponseCode": 200,
+              "ResponsePagePath": "/index.html",
+            },
+          ],
+          "DefaultCacheBehavior": Object {
+            "AllowedMethods": Array [
+              "GET",
+              "HEAD",
+            ],
+            "CachedMethods": Array [
+              "GET",
+              "HEAD",
+            ],
+            "Compress": true,
+            "ForwardedValues": Object {
+              "Cookies": Object {
+                "Forward": "none",
+              },
+              "QueryString": true,
+            },
+            "TargetOriginId": "origin1",
+            "ViewerProtocolPolicy": "redirect-to-https",
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": Array [
+            Object {
+              "ConnectionAttempts": 3,
+              "ConnectionTimeout": 10,
+              "DomainName": Object {
+                "Fn::GetAtt": Array [
+                  "WebApplicationOriginBucket7D83F54A",
+                  "RegionalDomainName",
+                ],
+              },
+              "Id": "origin1",
+              "S3OriginConfig": Object {
+                "OriginAccessIdentity": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "origin-access-identity/cloudfront/",
+                      Object {
+                        "Ref": "WebApplicationOriginAccessIdentityC8F81A32",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "PriceClass": "PriceClass_100",
+          "ViewerCertificate": Object {
+            "AcmCertificateArn": Object {
+              "Fn::GetAtt": Array [
+                "CertificateCertificateRequestorResource2890C6B7",
+                "Arn",
+              ],
+            },
+            "MinimumProtocolVersion": "TLSv1.2_2019",
+            "SslSupportMethod": "sni-only",
+          },
+        },
+      },
+      "Type": "AWS::CloudFront::Distribution",
+    },
+    "WebApplicationOriginAccessIdentityC8F81A32": Object {
+      "Properties": Object {
+        "CloudFrontOriginAccessIdentityConfig": Object {
+          "Comment": "Origin Access Identity for app.example.com",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "WebApplicationOriginBucket7D83F54A": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "WebsiteConfiguration": Object {
+          "ErrorDocument": "index.html",
+          "IndexDocument": "index.html",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "WebApplicationOriginBucketPolicy2EBE7FD1": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "WebApplicationOriginBucket7D83F54A",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "CanonicalUser": Object {
+                  "Fn::GetAtt": Array [
+                    "WebApplicationOriginAccessIdentityC8F81A32",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "WebApplicationOriginBucket7D83F54A",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "WebApplicationOriginBucket7D83F54A",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+  },
+}
+`;

@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["bazel", "bazelisk", "buildifier", "commitlint", "ibazel"],
+  "cSpell.words": [
+    "bazel",
+    "bazelisk",
+    "buildifier",
+    "cdkx",
+    "commitlint",
+    "ibazel"
+  ],
   "editor.formatOnSave": true,
   "bazel.buildifierPath": "/Users/rpatel/Development/Personal/cdk-extensions/node_modules/.bin/buildifier",
   "[bazel]": {
