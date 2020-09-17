@@ -1,6 +1,6 @@
 # CDK Extensions
 
-The one-stop shop for most common CDK extensions
+The one-stop shop for most common CDK extensions and opinioneted higher level constructs
 
 ## Packages 📦️
 
@@ -9,4 +9,4 @@ The one-stop shop for most common CDK extensions
 Provisions resources to setup serverless hosting on AWS cloud for static web applications
 
 
-### More coming soon
+More coming soon...
