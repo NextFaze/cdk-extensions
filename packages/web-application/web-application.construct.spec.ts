@@ -32,8 +32,7 @@ describe('WebApplication', () => {
       });
     });
 
-    //FIXME: snapshot tests do not work with bazel ts, as when updating snapshot files bazel does not have js outputs
-    xit('should match snapshot', () => {
+    it('should match snapshot', () => {
       expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     });
 
@@ -76,7 +75,7 @@ describe('WebApplication', () => {
       });
     });
 
-    xit('should match snapshot', () => {
+    it('should match snapshot', () => {
       expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     });
 
@@ -106,7 +105,7 @@ describe('WebApplication', () => {
       });
     });
 
-    xit('should match snapshot', () => {
+    it('should match snapshot', () => {
       expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
     });
 

@@ -1,4 +1,5 @@
-load("@npm//jest-cli:index.bzl", "jest", _jest_test = "jest_test")
+#FIXME testing with jest is not yet officially supported by bazel, for now just use jest cli directly
+load("@npm//jest:index.bzl", "jest", _jest_test = "jest_test")
 
 def jest_test(name, deps = [], jest_config = "//:jest.config.js", **kwargs):
     "A macro around the auto generated jest_test rule"
