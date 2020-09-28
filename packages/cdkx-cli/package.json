@@ -1,0 +1,28 @@
+{
+  "name": "@cdkx/cli",
+  "version": "1.0.0",
+  "description": "cdkx cli for less painful development experience",
+  "main": "index.js",
+  "private": false,
+  "bin": {
+    "cdkx": "bin/cdkx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NextFaze/cdk-extensions/packages/cdkx-cki"
+  },
+  "peerDependencies": {},
+  "dependencies": {
+    "aws-cdk": "^1.64.0",
+    "figlet": "^1.5.0",
+    "chalk": "^4.1.0",
+    "commander": "^6.1.0"
+  },
+  "keywords": [
+    "cdk",
+    "cdkx",
+    "cdkx-cli"
+  ],
+  "author": "Rushi Patel <rpatel@nextfaze.com>",
+  "license": "MIT"
+}
