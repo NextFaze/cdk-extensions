@@ -8,7 +8,6 @@
     "ibazel"
   ],
   "editor.formatOnSave": true,
-  "bazel.buildifierPath": "/Users/rpatel/Development/Personal/cdk-extensions/node_modules/.bin/buildifier",
   "[bazel]": {
     "editor.formatOnSave": false
   }
