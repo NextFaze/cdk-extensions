@@ -1,11 +1,13 @@
 {
   "cSpell.words": [
+    "Uploader",
     "bazel",
     "bazelisk",
     "buildifier",
     "cdkx",
     "commitlint",
-    "ibazel"
+    "ibazel",
+    "promisify"
   ],
   "editor.formatOnSave": true,
   "[bazel]": {

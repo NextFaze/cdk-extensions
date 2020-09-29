@@ -14,12 +14,16 @@
     "static-assets",
     "aws"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "busboy": "^0.3.1"
+  },
   "peerDependencies": {
     "@aws-cdk/core": "^1.64.0",
     "@aws-cdk/aws-cloudfront": "^1.64.0",
     "@aws-cdk/aws-s3": "^1.64.0",
-    "@aws-cdk/aws-cloudfront-origins": "^1.64.0"
+    "@aws-cdk/aws-cloudfront-origins": "^1.64.0",
+    "@aws-cdk/aws-apigateway": "^1.64.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.64.0"
   },
   "author": "Rushi Patel <rpatel@nextfaze.com>",
   "license": "MIT"
