@@ -5,11 +5,10 @@ import {
 } from '@aws-cdk/aws-cloudfront';
 import { S3Origin } from '@aws-cdk/aws-cloudfront-origins';
 import { Bucket, IBucket } from '@aws-cdk/aws-s3';
-import { AssetsServer, IAssetsServerProps } from '../assets-server.construct';
+import { AssetsServer } from '../constructs/assets-server.construct';
 
-export function addOriginDistribution(
+export function addAssetsServerDistribution(
   scope: AssetsServer,
-  props: IAssetsServerProps,
   {
     s3BucketSource,
     aliases,
@@ -19,7 +18,7 @@ export function addOriginDistribution(
     scope,
     'AccessIdentity',
     {
-      comment: `[Assets Server] Auto generated access identity for ${aliases[0]}`,
+      comment: `Auto generated access identity for ${aliases[0]}`,
     }
   );
 
@@ -31,6 +30,6 @@ export function addOriginDistribution(
       origin: new S3Origin(s3BucketSource),
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     },
-    comment: '[Assets Server] Auto generated distribution for static assets',
+    comment: 'Auto generated distribution for static assets',
   });
 }

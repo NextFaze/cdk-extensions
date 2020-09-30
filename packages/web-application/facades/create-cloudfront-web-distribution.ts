@@ -1,7 +1,7 @@
 import {
   WebApplication,
   IWebApplicationProps,
-} from '../web-application.construct';
+} from '../constructs/web-application.construct';
 import {
   CloudFrontWebDistribution,
   ViewerProtocolPolicy,

@@ -1,7 +1,7 @@
 import { Distribution } from '@aws-cdk/aws-cloudfront';
 import { Bucket, CorsRule, IBucket } from '@aws-cdk/aws-s3';
 import { Construct } from '@aws-cdk/core';
-import { addOriginDistribution } from './facades/add-origin-distribution';
+import { addAssetsServerDistribution } from '../facades/add-assets-server-distribution';
 
 export interface IAssetsServerProps {
   bucketConfig: {
@@ -27,7 +27,7 @@ export class AssetsServer extends Construct {
       this.bucket = bucketConfig.useExisting;
     }
 
-    this.distribution = addOriginDistribution(this, props, {
+    this.distribution = addAssetsServerDistribution(this, {
       s3BucketSource: this.bucket,
       aliases,
     });

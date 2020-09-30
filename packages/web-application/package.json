@@ -16,10 +16,14 @@
     "@aws-cdk/aws-s3": "^1.60.0",
     "@aws-cdk/aws-certificatemanager": "^1.60.0",
     "@aws-cdk/aws-ssm": "^1.60.0",
-    "@aws-cdk/aws-iam": "^1.60.0"
+    "@aws-cdk/aws-iam": "^1.60.0",
+    "@aws-cdk/aws-cloudfront-origins": "^1.60.0",
+    "@aws-cdk/aws-apigateway": "^1.60.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.60.0"
   },
   "dependencies": {
-    "change-case": "^4.1.1"
+    "change-case": "^4.1.1",
+    "busboy": "^0.3.1"
   },
   "keywords": [
     "cdk",

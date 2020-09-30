@@ -1,7 +1,7 @@
 import {
   WebApplication,
   IWebApplicationProps,
-} from '../web-application.construct';
+} from '../constructs/web-application.construct';
 import { CnameRecord } from '@aws-cdk/aws-route53';
 import { pascalCase } from 'change-case';
 import { DOMAIN_NAME_REGISTRAR } from '../constants';

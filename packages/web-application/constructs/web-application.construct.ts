@@ -3,13 +3,13 @@ import { Construct } from '@aws-cdk/core';
 import { IHostedZone } from '@aws-cdk/aws-route53';
 import { PriceClass } from '@aws-cdk/aws-cloudfront';
 import { ICertificate } from '@aws-cdk/aws-certificatemanager';
-import { DOMAIN_NAME_REGISTRAR } from './constants';
-import { createOriginAccessIdentity } from './facades/create-origin-access-identity';
-import { createOriginBucket } from './facades/create-origin-bucket';
-import { createCloudfrontWebDistribution } from './facades/create-cloudfront-web-distribution';
-import { getViewerCertificate } from './facades/get-viewer-certificate';
-import { addCnameRecords } from './facades/add-cname-records';
-import { createDynamicConfigParameter } from './facades/create-dynamic-config-parameter';
+import { DOMAIN_NAME_REGISTRAR } from '../constants';
+import { createOriginAccessIdentity } from '../facades/create-origin-access-identity';
+import { createOriginBucket } from '../facades/create-origin-bucket';
+import { createCloudfrontWebDistribution } from '../facades/create-cloudfront-web-distribution';
+import { getViewerCertificate } from '../facades/get-viewer-certificate';
+import { addCnameRecords } from '../facades/add-cname-records';
+import { createDynamicConfigParameter } from '../facades/create-dynamic-config-parameter';
 import { User } from '@aws-cdk/aws-iam';
 
 export interface IRequestCertificateProps {

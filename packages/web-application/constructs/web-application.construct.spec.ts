@@ -7,7 +7,7 @@ import {
   haveResource,
   SynthUtils,
 } from '@aws-cdk/assert';
-import { DOMAIN_NAME_REGISTRAR } from './constants';
+import { DOMAIN_NAME_REGISTRAR } from '../constants';
 import { WebApplication } from './web-application.construct';
 import { User } from '@aws-cdk/aws-iam';
 

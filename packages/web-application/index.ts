@@ -1,2 +1,2 @@
-export * from './web-application.construct';
+export * from './constructs/web-application.construct';
 export * from './constants';
