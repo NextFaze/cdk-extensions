@@ -1,4 +1,8 @@
-import { LambdaIntegration, RestApi } from '@aws-cdk/aws-apigateway';
+import {
+  LambdaIntegration,
+  PassthroughBehavior,
+  RestApi,
+} from '@aws-cdk/aws-apigateway';
 import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import {
   AssetsServer,
@@ -25,5 +29,10 @@ export function addAssetsServerApiResource(
   });
 
   const uploadResource = restApi.root.addResource('upload');
-  uploadResource.addMethod('POST', new LambdaIntegration(handler));
+  uploadResource.addMethod(
+    'POST',
+    new LambdaIntegration(handler, {
+      passthroughBehavior: PassthroughBehavior.NEVER,
+    })
+  );
 }

@@ -1,7 +1,6 @@
 import { APIGatewayEvent } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import Busboy from 'busboy';
-import { promisify } from 'util';
 
 /**
  * Upload files to s3 or return upload Url
@@ -26,8 +25,21 @@ export class AssetsUploader {
       });
     }
 
+    if (!event.body) {
+      return this.encodedResponse({
+        statusCode: 400,
+        body: { message: 'Cannot upload process request with empty body' },
+      });
+    }
+
     try {
-      const bbParser = new Busboy({ headers: event.headers });
+      const bbParser = new Busboy({
+        headers: {
+          'content-type':
+            event.headers['Content-Type'] || event.headers['content-type'],
+        },
+      });
+
       const formData = new Map<
         string,
         {
@@ -40,80 +52,90 @@ export class AssetsUploader {
         }
       >();
 
-      bbParser
-        .on('file', (fieldName, file, fileName, encoding, mimeType) => {
-          console.log('File received on field: ', fieldName);
-
-          formData.set(fieldName, {
-            stream: file,
-            fileName,
-            fieldName,
-            encoding,
-            mimeType,
-          });
-        })
-        .on(
-          'field',
-          (
-            fieldName,
-            value,
-            fieldNameTruncated,
-            viaTruncated,
-            encoding,
-            mimeType
-          ) => {
+      return new Promise((resolve, reject) => {
+        bbParser
+          .on('file', (fieldName, file, fileName, encoding, mimeType) => {
+            console.log('File received on field: ', fieldName);
             formData.set(fieldName, {
-              value: JSON.parse(value),
-              mimeType,
-              encoding,
+              stream: file,
+              fileName,
               fieldName,
+              encoding,
+              mimeType,
             });
-          }
-        )
-        .on('finish', () => {
-          if (!formData.get('s3Prefix')) {
-            return this.encodedResponse({
-              statusCode: 400,
-              body: { message: `Missing required property: s3Prefix` },
-            });
-          }
-
-          const s3UploadPromises = [] as Promise<S3.ManagedUpload.SendData>[];
-          for (const [, data] of formData) {
-            if (!data.stream) {
-              return;
+          })
+          .on(
+            'field',
+            (
+              fieldName,
+              value,
+              fieldNameTruncated,
+              viaTruncated,
+              encoding,
+              mimeType
+            ) => {
+              formData.set(fieldName, {
+                value: JSON.parse(value),
+                mimeType,
+                encoding,
+                fieldName,
+              });
+            }
+          )
+          .on('finish', () => {
+            if (!formData.get('s3Prefix')) {
+              return this.encodedResponse({
+                statusCode: 400,
+                body: { message: `Missing required property: s3Prefix` },
+              });
             }
 
-            console.log('Uploading File: ', data.fileName || data.fieldName);
-            // upload each file to s3
-            s3UploadPromises.push(
-              this.s3
-                .upload({
-                  Bucket: bucketName,
-                  Key: `${formData.get('s3Prefix')}/${
-                    data.fileName || data.fieldName
-                  }`,
-                  ContentType: data.mimeType,
-                  Body: data.stream,
-                  ContentEncoding: data.encoding,
-                })
-                .promise()
-            );
-          }
-          return Promise.all(s3UploadPromises);
+            const s3UploadPromises = [] as Promise<S3.ManagedUpload.SendData>[];
+            for (const [, data] of formData) {
+              if (!data.stream) {
+                return;
+              }
+
+              console.log('Uploading File: ', data.fileName || data.fieldName);
+              // upload each file to s3
+              s3UploadPromises.push(
+                this.s3
+                  .upload({
+                    Bucket: bucketName,
+                    Key: `${formData.get('s3Prefix')}/${
+                      data.fileName || data.fieldName
+                    }`,
+                    ContentType: data.mimeType,
+                    Body: data.stream,
+                    ContentEncoding: data.encoding,
+                  })
+                  .promise()
+              );
+            }
+            return Promise.all(s3UploadPromises);
+          });
+
+        bbParser.on('finish', () => {
+          console.log('Successfully processed all files!');
+          // return resolve(
+          //   this.encodedResponse({
+          //     statusCode: 200,
+          //     body: {
+          //       success: true,
+          //     },
+          //   })
+          // );
         });
 
-      await promisify(bbParser.end)();
-
-      console.log('Successfully processed all files!');
-      return this.encodedResponse({
-        statusCode: 200,
-        body: {
-          success: true,
-        },
+        bbParser.write(event.body || '', (err) => {
+          if (err) {
+            return reject(err);
+          }
+        });
+        bbParser.end();
       });
     } catch (err) {
-      console.log('Error processing request: ', JSON.stringify(err));
+      console.log('Error processing request: ', err);
       return this.encodedResponse({
         statusCode: 500,
         body: { message: 'Something went wrong!' },

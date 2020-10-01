@@ -4,6 +4,7 @@
     "target": "ES2015",
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
