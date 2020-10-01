@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetsServerConstruct should create required resources 1`] = `
+Object {
+  "Resources": Object {
+    "AssetsServerAccessIdentity1F7D5DB0": Object {
+      "Properties": Object {
+        "CloudFrontOriginAccessIdentityConfig": Object {
+          "Comment": "Auto generated access identity for assets.example.com",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "AssetsServerAssetsExampleComCnameRecord1D607E4C": Object {
+      "Properties": Object {
+        "HostedZoneId": Object {
+          "Ref": "HostedZoneDB99F866",
+        },
+        "Name": "assets.example.com.Test.",
+        "ResourceRecords": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "AssetsServerDistribution52B7FC83",
+              "DomainName",
+            ],
+          },
+        ],
+        "TTL": "1800",
+        "Type": "CNAME",
+      },
+      "Type": "AWS::Route53::RecordSet",
+    },
+    "AssetsServerDistribution52B7FC83": Object {
+      "Properties": Object {
+        "DistributionConfig": Object {
+          "Aliases": Array [
+            "assets.example.com",
+          ],
+          "Comment": "Auto generated distribution for static assets",
+          "DefaultCacheBehavior": Object {
+            "Compress": true,
+            "ForwardedValues": Object {
+              "QueryString": false,
+            },
+            "TargetOriginId": "AssetsServerDistributionOrigin1AB45B792",
+            "ViewerProtocolPolicy": "redirect-to-https",
+          },
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": Array [
+            Object {
+              "DomainName": Object {
+                "Fn::GetAtt": Array [
+                  "OriginBucketCA772B8F",
+                  "RegionalDomainName",
+                ],
+              },
+              "Id": "AssetsServerDistributionOrigin1AB45B792",
+              "S3OriginConfig": Object {
+                "OriginAccessIdentity": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "origin-access-identity/cloudfront/",
+                      Object {
+                        "Ref": "AssetsServerDistributionOrigin1S3Origin8D507F38",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      },
+      "Type": "AWS::CloudFront::Distribution",
+    },
+    "AssetsServerDistributionOrigin1S3Origin8D507F38": Object {
+      "Properties": Object {
+        "CloudFrontOriginAccessIdentityConfig": Object {
+          "Comment": "Identity for AssetsServerDistributionOrigin1AB45B792",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "HostedZoneDB99F866": Object {
+      "Properties": Object {
+        "Name": "Test.",
+      },
+      "Type": "AWS::Route53::HostedZone",
+    },
+    "OriginBucketCA772B8F": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "OriginBucketPolicyFD67BA59": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "OriginBucketCA772B8F",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "CanonicalUser": Object {
+                  "Fn::GetAtt": Array [
+                    "AssetsServerAccessIdentity1F7D5DB0",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "OriginBucketCA772B8F",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "OriginBucketCA772B8F",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "CanonicalUser": Object {
+                  "Fn::GetAtt": Array [
+                    "AssetsServerDistributionOrigin1S3Origin8D507F38",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "OriginBucketCA772B8F",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "OriginBucketCA772B8F",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+  },
+}
+`;

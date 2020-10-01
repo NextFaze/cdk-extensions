@@ -34,12 +34,10 @@ export interface IWebApplicationProps {
 
 export class WebApplication extends Construct {
   configParameter: StringParameter | undefined;
-  constructor(
-    scope: Construct,
-    id: string,
-    protected props: IWebApplicationProps
-  ) {
+  constructor(scope: Construct, id: string, props: IWebApplicationProps) {
     super(scope, id);
+
+    const { aliases, hostedZone, domainNameRegistrar } = props;
 
     const originBucket = createOriginBucket(this, props);
     const identity = createOriginAccessIdentity(this, props);
@@ -54,6 +52,11 @@ export class WebApplication extends Construct {
 
     this.configParameter = createDynamicConfigParameter(this, props);
 
-    addCnameRecords(this, props, { distribution });
+    addCnameRecords(this, {
+      distribution,
+      aliases,
+      hostedZone,
+      domainNameRegistrar,
+    });
   }
 }

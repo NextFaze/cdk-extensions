@@ -30,6 +30,7 @@ export function addAssetsServerDistribution(
       origin: new S3Origin(s3BucketSource),
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     },
+    domainNames: aliases,
     comment: 'Auto generated distribution for static assets',
   });
 }
