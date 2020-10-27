@@ -33,106 +33,45 @@ export class AssetsUploader {
     }
 
     try {
-      const bbParser = new Busboy({
-        headers: {
-          'content-type':
-            event.headers['Content-Type'] || event.headers['content-type'],
-        },
-      });
+      const { parsedBody } = await this.parseFormData(event);
 
-      const formData = new Map<
-        string,
-        {
-          stream?: NodeJS.ReadableStream;
-          fileName?: string;
-          fieldName: string;
-          encoding: string;
-          mimeType: string;
-          value?: unknown;
-        }
-      >();
+      if (!parsedBody) {
+        throw new Error('No body after parsing.');
+      }
 
-      return new Promise((resolve, reject) => {
-        bbParser
-          .on('file', (fieldName, file, fileName, encoding, mimeType) => {
-            console.log('File received on field: ', fieldName);
-            formData.set(fieldName, {
-              stream: file,
-              fileName,
-              fieldName,
-              encoding,
-              mimeType,
-            });
-          })
-          .on(
-            'field',
-            (
-              fieldName,
-              value,
-              fieldNameTruncated,
-              viaTruncated,
-              encoding,
-              mimeType
-            ) => {
-              formData.set(fieldName, {
-                value: JSON.parse(value),
-                mimeType,
-                encoding,
-                fieldName,
-              });
-            }
-          )
-          .on('finish', () => {
-            if (!formData.get('s3Prefix')) {
-              return this.encodedResponse({
-                statusCode: 400,
-                body: { message: `Missing required property: s3Prefix` },
-              });
-            }
-
-            const s3UploadPromises = [] as Promise<S3.ManagedUpload.SendData>[];
-            for (const [, data] of formData) {
-              if (!data.stream) {
-                return;
-              }
-
-              console.log('Uploading File: ', data.fileName || data.fieldName);
-              // upload each file to s3
-              s3UploadPromises.push(
-                this.s3
-                  .upload({
-                    Bucket: bucketName,
-                    Key: `${formData.get('s3Prefix')}/${
-                      data.fileName || data.fieldName
-                    }`,
-                    ContentType: data.mimeType,
-                    Body: data.stream,
-                    ContentEncoding: data.encoding,
-                  })
-                  .promise()
-              );
-            }
-            return Promise.all(s3UploadPromises);
-          });
-
-        bbParser.on('finish', () => {
-          console.log('Successfully processed all files!');
-          // return resolve(
-          //   this.encodedResponse({
-          //     statusCode: 200,
-          //     body: {
-          //       success: true,
-          //     },
-          //   })
-          // );
+      if (!parsedBody.s3Prefix) {
+        this.encodedResponse({
+          statusCode: 400,
+          body: { message: `Missing required property: s3Prefix` },
         });
+      }
 
-        bbParser.write(event.body || '', (err) => {
-          if (err) {
-            return reject(err);
-          }
-        });
-        bbParser.end();
+      // TODO: validate and upload files to s3
+      // const s3UploadPromises = [] as Promise<S3.ManagedUpload.SendData>[];
+      // for (const [, data] of parsedBody) {
+      //   if (!data.stream) {
+      //     return;
+      //   }
+      //   console.log('Uploading File: ', data.fileName || data.fieldName);
+      //   // upload each file to s3
+      //   s3UploadPromises.push(
+      //     this.s3
+      //       .upload({
+      //         Bucket: bucketName,
+      //         Key: `${formData.get('s3Prefix')}/${
+      //           data.fileName || data.fieldName
+      //         }`,
+      //         ContentType: data.mimeType,
+      //         Body: data.stream,
+      //         ContentEncoding: data.encoding,
+      //       })
+      //       .promise()
+      //   );
+      // }
+      // return Promise.all(s3UploadPromises);
+      return this.encodedResponse({
+        statusCode: 200,
+        body: {},
       });
     } catch (err) {
       console.log('Error processing request: ', err);
@@ -141,6 +80,95 @@ export class AssetsUploader {
         body: { message: 'Something went wrong!' },
       });
     }
+  }
+
+  parseFormData(
+    event: APIGatewayEvent & {
+      parsedBody?: {
+        [key: string]: {
+          stream?: NodeJS.ReadableStream;
+          fileName?: string;
+          fieldName: string;
+          encoding: string;
+          mimeType: string;
+          value?: unknown;
+        };
+      };
+    }
+  ): Promise<typeof event> {
+    const busboy = new Busboy({
+      headers: {
+        'content-type':
+          event.headers['Content-Type'] || event.headers['content-type'],
+      },
+    });
+
+    const result = {} as {
+      [field: string]: {
+        data?: Buffer;
+        fileName?: string;
+        fieldName: string;
+        encoding: string;
+        mimeType: string;
+        value?: unknown;
+        isBinary?: boolean;
+      };
+    };
+
+    return new Promise((resolve, reject) => {
+      busboy
+        .on('file', (fieldName, file, fileName, encoding, mimeType) => {
+          console.log('File received on field: ', fieldName);
+          let fileData: Buffer;
+          file.on('data', (data: Buffer) => {
+            fileData = data;
+          });
+
+          file.on('end', () => {
+            result[fieldName] = {
+              data: fileData,
+              fileName,
+              fieldName,
+              encoding,
+              mimeType,
+              isBinary: true,
+            };
+          });
+        })
+        .on(
+          'field',
+          (
+            fieldName,
+            value,
+            fieldNameTruncated,
+            viaTruncated,
+            encoding,
+            mimeType
+          ) => {
+            result[fieldName] = {
+              value,
+              mimeType,
+              encoding,
+              fieldName,
+            };
+          }
+        )
+        .on('error', (err: unknown) => {
+          console.error(err);
+          reject(err);
+        })
+
+        .on('finish', () => {
+          event.parsedBody = result;
+          resolve(event);
+        });
+
+      busboy.write(
+        event.body || '',
+        event.isBase64Encoded ? 'base64' : 'binary'
+      );
+      busboy.end();
+    });
   }
 
   private encodedResponse({

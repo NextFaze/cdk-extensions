@@ -2,6 +2,7 @@ import { APIGatewayEvent } from 'aws-lambda';
 
 export function getSampleEvent<T>(
   body?: T,
+  isBase64Encoded?: boolean,
   headers?: unknown
 ): APIGatewayEvent {
   return ({
@@ -87,7 +88,7 @@ export function getSampleEvent<T>(
       domainName: '70ixmpl4fl.execute-api.us-east-2.amazonaws.com',
       apiId: '70ixmpl4fl',
     },
-    body: body || null,
-    isBase64Encoded: false,
+    body: body ?? null,
+    isBase64Encoded: isBase64Encoded ?? false,
   } as unknown) as APIGatewayEvent;
 }

@@ -3,6 +3,7 @@ import { AssetsUploader } from './assets-uploader';
 import { getSampleEvent } from './__test__/api-gateway-post-event';
 import fs from 'fs';
 import FormData from 'form-data';
+import path from 'path';
 
 describe('AssetsUploader', () => {
   let assetsUploader: AssetsUploader;
@@ -45,11 +46,22 @@ describe('AssetsUploader', () => {
 
     const form = new FormData();
     const headers = form.getHeaders();
-    form.append('file', fs.createReadStream('__test__/assets/airplane.png'));
-
-    const response = await assetsUploader.run(
-      getSampleEvent<Buffer>(Buffer.from(form.toString()), { ...headers })
+    const pathToFile = path.resolve(
+      __dirname,
+      './__test__/assets/airplane.png'
     );
+
+    form.append('file', fs.readFileSync(pathToFile));
+    form.append('s3Prefix', 'test/bucket/path');
+
+    const sampleEvent = getSampleEvent<string>(
+      form.getBuffer().toString('base64'),
+      true,
+      {
+        ...headers,
+      }
+    );
+    const response = await assetsUploader.run(sampleEvent);
 
     expect(response).toEqual({
       body: JSON.stringify({ success: true }),
