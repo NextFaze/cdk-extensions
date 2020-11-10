@@ -31,7 +31,9 @@ setup_ts_test(
         ":library",
         "@npm//@aws-cdk/aws-route53",
         "@npm//@aws-cdk/aws-certificatemanager",
-        "@npm//@aws-cdk/aws-iam"
+        "@npm//@aws-cdk/aws-iam",
+        "@npm//form-data",
+        "@npm//aws-sdk"
     ],
 )
 
