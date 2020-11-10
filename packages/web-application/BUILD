@@ -25,24 +25,25 @@ setup_ts_build(
     ],
 )
 
-setup_ts_test(
-    name = "test_library",
-    deps = [
-        ":library",
-        "@npm//@aws-cdk/aws-route53",
-        "@npm//@aws-cdk/aws-certificatemanager",
-        "@npm//@aws-cdk/aws-iam",
-        "@npm//form-data",
-        "@npm//aws-sdk"
-    ],
-)
+# Using jest test 
+# setup_ts_test(
+#     name = "test_library",
+#     deps = [
+#         ":library",
+#         "@npm//@aws-cdk/aws-route53",
+#         "@npm//@aws-cdk/aws-certificatemanager",
+#         "@npm//@aws-cdk/aws-iam",
+#         "@npm//form-data",
+#         "@npm//aws-sdk"
+#     ],
+# )
 
-jest_test(
-    name = "test",
-    deps = [
-        ":test_library",
-    ],
-)
+# jest_test(
+#     name = "test",
+#     deps = [
+#         ":test_library",
+#     ],
+# )
 
 cdkx_package(
     name = "web-application",

@@ -1,22 +1,22 @@
 import {
   LambdaIntegration,
   PassthroughBehavior,
-  RestApi,
 } from '@aws-cdk/aws-apigateway';
 import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import {
   AssetsServer,
   IAssetsServerProps,
 } from '../constructs/assets-server.construct';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { Bucket, IBucket } from '@aws-cdk/aws-s3';
+import path from 'path';
 
 export function addAssetsServerApiResource(
   scope: AssetsServer,
-  props: IAssetsServerProps,
-  { s3Bucket }: { s3Bucket: Bucket }
+  { restApiResource }: IAssetsServerProps,
+  { s3Bucket }: { s3Bucket: Bucket | IBucket }
 ): void {
   const handler = new NodejsFunction(scope, 'Handler', {
-    entry: '../handlers/index.js',
+    entry: path.resolve(__dirname, '../handlers/index.ts'),
     handler: 'assetsUploaderHandler',
     environment: {
       BUCKET_NAME: s3Bucket.bucketName,
@@ -24,11 +24,7 @@ export function addAssetsServerApiResource(
   });
   s3Bucket.grantWrite(handler);
 
-  const restApi = new RestApi(scope, 'RestApi', {
-    binaryMediaTypes: ['multipart/form-data'],
-  });
-
-  const uploadResource = restApi.root.addResource('upload');
+  const uploadResource = restApiResource.addResource('upload');
   uploadResource.addMethod(
     'POST',
     new LambdaIntegration(handler, {

@@ -1,4 +1,5 @@
 import { SynthUtils } from '@aws-cdk/assert';
+import { RestApi } from '@aws-cdk/aws-apigateway';
 import { HostedZone } from '@aws-cdk/aws-route53';
 import { Stack } from '@aws-cdk/core';
 import { DOMAIN_NAME_REGISTRAR } from '../constants';
@@ -15,6 +16,7 @@ describe('AssetsServerConstruct', () => {
       hostedZone: new HostedZone(stack, 'HostedZone', {
         zoneName: 'Test',
       }),
+      restApiResource: new RestApi(stack, 'RestApi').root,
     });
   });
   it('should create required resources', () => {
