@@ -2,6 +2,13 @@ import { APIGatewayEvent } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import Busboy from 'busboy';
 
+export interface IUploadSuccessBody {
+  location: string;
+  key: string;
+  bucket: string;
+  eTag: string;
+}
+
 /**
  * Upload files to s3 or return upload Url
  * @params returnSignedUrlOnly: boolean @default false
@@ -39,45 +46,59 @@ export class AssetsUploader {
         throw new Error('No body after parsing.');
       }
 
-      if (!parsedBody.s3Prefix) {
-        this.encodedResponse({
+      if (!parsedBody.fields?.s3Prefix) {
+        return this.encodedResponse({
           statusCode: 400,
           body: { message: `Missing required property: s3Prefix` },
         });
       }
 
-      // TODO: validate and upload files to s3
-      // const s3UploadPromises = [] as Promise<S3.ManagedUpload.SendData>[];
-      // for (const [, data] of parsedBody) {
-      //   if (!data.stream) {
-      //     return;
-      //   }
-      //   console.log('Uploading File: ', data.fileName || data.fieldName);
-      //   // upload each file to s3
-      //   s3UploadPromises.push(
-      //     this.s3
-      //       .upload({
-      //         Bucket: bucketName,
-      //         Key: `${formData.get('s3Prefix')}/${
-      //           data.fileName || data.fieldName
-      //         }`,
-      //         ContentType: data.mimeType,
-      //         Body: data.stream,
-      //         ContentEncoding: data.encoding,
-      //       })
-      //       .promise()
-      //   );
-      // }
-      // return Promise.all(s3UploadPromises);
+      const s3UploadPromises = [] as Promise<S3.ManagedUpload.SendData>[];
+
+      for (const fileKey in parsedBody?.files) {
+        const currentFile = parsedBody?.files[fileKey];
+        if (!currentFile?.data) {
+          return this.encodedResponse({
+            statusCode: 400,
+            body: `Unable to parse binary ${currentFile.fileName}`,
+          });
+        }
+
+        const filePublicName = currentFile.fileName ?? currentFile.fieldName;
+        console.log('Uploading File: ', filePublicName);
+
+        // upload each file to s3
+        s3UploadPromises.push(
+          this.s3
+            .upload({
+              Bucket: bucketName,
+              Key: `${parsedBody.fields.s3Prefix}/${filePublicName}`,
+              ContentType: currentFile.mimeType,
+              Body: currentFile.data,
+              ContentEncoding: currentFile.encoding,
+            })
+            .promise()
+        );
+      }
+      const response = await Promise.all(s3UploadPromises);
+
+      const responseToReturn = response.map((returnedItem) => ({
+        location: returnedItem.Location,
+        key: returnedItem.Key,
+        bucket: returnedItem.Bucket,
+        eTag: returnedItem.ETag,
+      })) as IUploadSuccessBody[];
+
       return this.encodedResponse({
         statusCode: 200,
-        body: {},
+        body:
+          responseToReturn.length > 1 ? responseToReturn : responseToReturn[0],
       });
     } catch (err) {
       console.log('Error processing request: ', err);
       return this.encodedResponse({
         statusCode: 500,
-        body: { message: 'Something went wrong!' },
+        body: { message: err.message ?? 'Something went wrong!' },
       });
     }
   }
@@ -85,14 +106,17 @@ export class AssetsUploader {
   parseFormData(
     event: APIGatewayEvent & {
       parsedBody?: {
-        [key: string]: {
-          stream?: NodeJS.ReadableStream;
-          fileName?: string;
-          fieldName: string;
-          encoding: string;
-          mimeType: string;
-          value?: unknown;
+        files: {
+          [key: string]: {
+            data?: Buffer;
+            fileName?: string;
+            fieldName: string;
+            encoding: string;
+            mimeType: string;
+            value?: unknown;
+          };
         };
+        fields: { [fieldName: string]: unknown };
       };
     }
   ): Promise<typeof event> {
@@ -103,29 +127,36 @@ export class AssetsUploader {
       },
     });
 
-    const result = {} as {
-      [field: string]: {
-        data?: Buffer;
-        fileName?: string;
-        fieldName: string;
-        encoding: string;
-        mimeType: string;
-        value?: unknown;
-        isBinary?: boolean;
+    const result = {
+      files: {},
+      fields: {},
+    } as {
+      files: {
+        [fileName: string]: {
+          data?: Buffer;
+          fileName?: string;
+          fieldName: string;
+          encoding: string;
+          mimeType: string;
+          value?: unknown;
+          isBinary?: boolean;
+        };
+      };
+      fields: {
+        [fieldName: string]: unknown;
       };
     };
 
     return new Promise((resolve, reject) => {
       busboy
         .on('file', (fieldName, file, fileName, encoding, mimeType) => {
-          console.log('File received on field: ', fieldName);
           let fileData: Buffer;
           file.on('data', (data: Buffer) => {
             fileData = data;
           });
 
           file.on('end', () => {
-            result[fieldName] = {
+            result.files[fieldName] = {
               data: fileData,
               fileName,
               fieldName,
@@ -135,24 +166,9 @@ export class AssetsUploader {
             };
           });
         })
-        .on(
-          'field',
-          (
-            fieldName,
-            value,
-            fieldNameTruncated,
-            viaTruncated,
-            encoding,
-            mimeType
-          ) => {
-            result[fieldName] = {
-              value,
-              mimeType,
-              encoding,
-              fieldName,
-            };
-          }
-        )
+        .on('field', (fieldName, value) => {
+          result.fields[fieldName] = value;
+        })
         .on('error', (err: unknown) => {
           console.error(err);
           reject(err);
