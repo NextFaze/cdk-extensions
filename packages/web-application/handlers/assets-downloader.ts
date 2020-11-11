@@ -54,6 +54,7 @@ export class AssetsDownloader extends BaseHandler {
       });
     }
 
+    // if original file requested redirect to it
     if (!resolution) {
       return this.encodedResponse({
         // permanent redirect
@@ -64,6 +65,25 @@ export class AssetsDownloader extends BaseHandler {
         },
       });
     }
+
+    const existingVersion = await this.s3
+      .headObject({
+        Bucket: bucketName,
+        Key: `${resolution}/${key}`,
+      })
+      .promise();
+
+    if (existingVersion) {
+      return this.encodedResponse({
+        // permanent redirect to exiting resolution
+        statusCode: 301,
+        body: '',
+        headers: {
+          location: `${assetPublicHost}/${resolution}/${key}`,
+        },
+      });
+    }
+
     // when height or width is set to null, sharp auto assumes width/height
     const [width, height] = resolution
       .toUpperCase()
