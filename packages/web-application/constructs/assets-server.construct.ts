@@ -42,6 +42,8 @@ export class AssetsServer extends Construct {
 
     addAssetsServerApiResource(this, props, {
       s3Bucket: this.bucket,
+      assetsPublicHost:
+        aliases[0] ?? `http://${this.distribution.distributionDomainName}`,
     });
 
     addCnameRecords(this, {

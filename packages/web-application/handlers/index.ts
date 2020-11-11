@@ -9,3 +9,6 @@ const assetsUploader = new AssetsUploader(s3);
 export const assetsUploaderHandler: Function = assetsUploader.run.bind(
   assetsUploader
 );
+
+// TODO: handler
+export const assetsDownloaderHandler: Function = Function;

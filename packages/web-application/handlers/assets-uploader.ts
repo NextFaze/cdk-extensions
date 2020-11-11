@@ -1,6 +1,7 @@
 import { APIGatewayEvent } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import Busboy from 'busboy';
+import { BaseHandler } from './base-handler';
 
 export interface IUploadSuccessBody {
   location: string;
@@ -13,8 +14,10 @@ export interface IUploadSuccessBody {
  * Upload files to s3 or return upload Url
  * @params returnSignedUrlOnly: boolean @default false
  */
-export class AssetsUploader {
-  constructor(private s3: S3) {}
+export class AssetsUploader extends BaseHandler {
+  constructor(private s3: S3) {
+    super();
+  }
   async run(
     event: APIGatewayEvent
   ): Promise<{
@@ -28,7 +31,7 @@ export class AssetsUploader {
     if (!bucketName) {
       return this.encodedResponse({
         statusCode: 500,
-        body: { message: 'Missing required environment variable: TABLE_NAME' },
+        body: { message: 'Missing required environment variable: BUCKET_NAME' },
       });
     }
 
@@ -185,22 +188,5 @@ export class AssetsUploader {
       );
       busboy.end();
     });
-  }
-
-  private encodedResponse({
-    statusCode = 200,
-    body,
-  }: {
-    statusCode: number;
-    body: unknown;
-  }) {
-    return {
-      statusCode,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-      isBase64Encoded: false,
-    };
   }
 }
