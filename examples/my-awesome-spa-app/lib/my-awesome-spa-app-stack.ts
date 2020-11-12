@@ -16,7 +16,9 @@ export class MyAwesomeSpaAppStack extends cdk.Stack {
           zoneName: 'faze.biz',
         }
       ),
-      restApiResource: new RestApi(this, 'CDKXExampleApi').root,
+      restApiResource: new RestApi(this, 'CDKXExampleApi', {
+        binaryMediaTypes: ['*/*'],
+      }).root,
     });
   }
 }
