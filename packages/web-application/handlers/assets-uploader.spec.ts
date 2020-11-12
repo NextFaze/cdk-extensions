@@ -31,7 +31,7 @@ describe('AssetsUploader', () => {
 
     const response = await assetsUploader.run(getSampleEvent());
     expect(response).toEqual({
-      body: '{"message":"Missing required environment variable: TABLE_NAME"}',
+      body: '{"message":"Missing required environment variable: BUCKET_NAME"}',
       headers: {
         'Content-Type': 'application/json',
       },

@@ -1,4 +1,5 @@
 import { IResource } from '@aws-cdk/aws-apigateway';
+import { Certificate, ICertificate } from '@aws-cdk/aws-certificatemanager';
 import { Distribution } from '@aws-cdk/aws-cloudfront';
 import { IHostedZone } from '@aws-cdk/aws-route53';
 import { Bucket, CorsRule, IBucket } from '@aws-cdk/aws-s3';
@@ -17,15 +18,30 @@ export interface IAssetsServerProps {
   domainNameRegistrar: DOMAIN_NAME_REGISTRAR;
   hostedZone: IHostedZone;
   restApiResource: IResource;
+  /**
+   * @default cloudfront Default cloudfront certificate '*.cloudfront.net'
+   */
+  certificate?: ICertificate | Certificate;
 }
 
 export class AssetsServer extends Construct {
   readonly bucket: Bucket | IBucket;
   readonly distribution: Distribution;
-  constructor(scope: Construct, id: string, private props: IAssetsServerProps) {
+  constructor(scope: Construct, id: string, props: IAssetsServerProps) {
     super(scope, id);
+    const {
+      bucketConfig,
+      aliases,
+      hostedZone,
+      domainNameRegistrar,
+      certificate,
+    } = props;
 
-    const { bucketConfig, aliases, hostedZone, domainNameRegistrar } = props;
+    if (aliases.length && !certificate) {
+      throw new Error(
+        'Certificate must be supplied when using custom domain name!'
+      );
+    }
     if (!bucketConfig?.useExisting) {
       this.bucket = new Bucket(scope, 'OriginBucket', {
         versioned: true,

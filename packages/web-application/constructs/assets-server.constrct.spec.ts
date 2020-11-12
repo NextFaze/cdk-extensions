@@ -1,5 +1,6 @@
 import { SynthUtils } from '@aws-cdk/assert';
 import { RestApi } from '@aws-cdk/aws-apigateway';
+import { DnsValidatedCertificate } from '@aws-cdk/aws-certificatemanager';
 import { HostedZone } from '@aws-cdk/aws-route53';
 import { Stack } from '@aws-cdk/core';
 import { DOMAIN_NAME_REGISTRAR } from '../constants';
@@ -10,12 +11,17 @@ describe('AssetsServerConstruct', () => {
 
   beforeEach(() => {
     stack = new Stack();
+    const hostedZone = new HostedZone(stack, 'HostedZone', {
+      zoneName: 'example.com',
+    });
     new AssetsServer(stack, 'AssetsServer', {
       aliases: ['assets.example.com'],
-      domainNameRegistrar: DOMAIN_NAME_REGISTRAR.AWS,
-      hostedZone: new HostedZone(stack, 'HostedZone', {
-        zoneName: 'Test',
+      certificate: new DnsValidatedCertificate(stack, 'MyCertificate', {
+        domainName: '*.example.com',
+        hostedZone,
       }),
+      domainNameRegistrar: DOMAIN_NAME_REGISTRAR.AWS,
+      hostedZone,
       restApiResource: new RestApi(stack, 'RestApi').root,
     });
   });
