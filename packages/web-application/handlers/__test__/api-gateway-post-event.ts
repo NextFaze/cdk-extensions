@@ -1,10 +1,18 @@
 import { APIGatewayEvent } from 'aws-lambda';
 
-export function getSampleEvent<T>(
-  body?: T,
-  isBase64Encoded?: boolean,
-  headers?: unknown
-): APIGatewayEvent {
+export function getSampleEvent<T>({
+  body,
+  isBase64Encoded,
+  headers,
+  queryStringParameters,
+  pathParameters,
+}: {
+  body?: T;
+  isBase64Encoded?: boolean;
+  headers?: unknown;
+  queryStringParameters?: Record<string, unknown>;
+  pathParameters?: Record<string, unknown>;
+} = {}): APIGatewayEvent {
   return ({
     resource: '/',
     path: '/',
@@ -51,9 +59,9 @@ export function getSampleEvent<T>(
       'X-Forwarded-Port': ['443'],
       'X-Forwarded-Proto': ['https'],
     },
-    queryStringParameters: null,
+    queryStringParameters: queryStringParameters ?? null,
     multiValueQueryStringParameters: null,
-    pathParameters: null,
+    pathParameters: pathParameters ?? null,
     stageVariables: null,
     requestContext: {
       resourceId: '2gxmpl',

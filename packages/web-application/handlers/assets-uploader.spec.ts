@@ -62,13 +62,13 @@ describe('AssetsUploader', () => {
 
     form.append('file', fs.readFileSync(pathToFile));
 
-    const sampleEvent = getSampleEvent<string>(
-      form.getBuffer().toString('base64'),
-      true,
-      {
+    const sampleEvent = getSampleEvent<string>({
+      body: form.getBuffer().toString('base64'),
+      isBase64Encoded: true,
+      headers: {
         ...headers,
-      }
-    );
+      },
+    });
     const response = await assetsUploader.run(sampleEvent);
 
     expect(response).toEqual({
@@ -108,13 +108,13 @@ describe('AssetsUploader', () => {
     });
     form.append('s3Prefix', 'path/to/bucket');
 
-    const sampleEvent = getSampleEvent<string>(
-      form.getBuffer().toString('base64'),
-      true,
-      {
+    const sampleEvent = getSampleEvent<string>({
+      body: form.getBuffer().toString('base64'),
+      isBase64Encoded: true,
+      headers: {
         ...headers,
-      }
-    );
+      },
+    });
     const response = await assetsUploader.run(sampleEvent);
     expect(response).toEqual({
       body: '{"location":"https://path-to-uploaded-location"}',
@@ -150,13 +150,13 @@ describe('AssetsUploader', () => {
     });
     form.append('s3Prefix', 'path/to/bucket');
 
-    const sampleEvent = getSampleEvent<string>(
-      form.getBuffer().toString('base64'),
-      true,
-      {
+    const sampleEvent = getSampleEvent<string>({
+      body: form.getBuffer().toString('base64'),
+      isBase64Encoded: true,
+      headers: {
         ...headers,
-      }
-    );
+      },
+    });
     const response = await assetsUploader.run(sampleEvent);
     expect(response).toEqual({
       body:

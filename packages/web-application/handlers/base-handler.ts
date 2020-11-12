@@ -19,7 +19,7 @@ export abstract class BaseHandler {
         'Content-Type': 'application/json',
         ...headers,
       },
-      body: JSON.stringify(body),
+      body: typeof body === 'string' ? body : JSON.stringify(body),
       isBase64Encoded: false,
     };
   }

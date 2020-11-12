@@ -48,9 +48,9 @@ export class AssetsDownloader extends BaseHandler {
     if (!key) {
       return this.encodedResponse({
         statusCode: 500,
-        body: JSON.stringify({
+        body: {
           message: 'Could not resolve file name.',
-        }),
+        },
       });
     }
 
@@ -66,22 +66,29 @@ export class AssetsDownloader extends BaseHandler {
       });
     }
 
-    const existingVersion = await this.s3
-      .headObject({
-        Bucket: bucketName,
-        Key: `${resolution}/${key}`,
-      })
-      .promise();
+    try {
+      const existingVersion = await this.s3
+        .headObject({
+          Bucket: bucketName,
+          Key: `${resolution}/${key}`,
+        })
+        .promise();
 
-    if (existingVersion) {
-      return this.encodedResponse({
-        // permanent redirect to exiting resolution
-        statusCode: 301,
-        body: '',
-        headers: {
-          location: `${assetPublicHost}/${resolution}/${key}`,
-        },
-      });
+      if (existingVersion) {
+        return this.encodedResponse({
+          // permanent redirect to exiting resolution
+          statusCode: 301,
+          body: '',
+          headers: {
+            location: `${assetPublicHost}/${resolution}/${key}`,
+          },
+        });
+      }
+    } catch (err) {
+      // if file some unknown error was thrown, rethrow
+      if (err.code !== 'NoSuchKey') {
+        throw err;
+      }
     }
 
     // when height or width is set to null, sharp auto assumes width/height
@@ -90,23 +97,32 @@ export class AssetsDownloader extends BaseHandler {
       .split('X')
       .map((seg) => (seg !== 'AUTO' ? Number.parseInt(seg) : null));
 
+    let originalFile: S3.GetObjectOutput;
     try {
-      const originalFile = await this.s3
+      originalFile = await this.s3
         .getObject({
           Bucket: bucketName,
           Key: key,
         })
         .promise();
+    } catch (err) {
+      if (err.code !== 'NoSuchKey') {
+        throw err;
+      }
+      return this.encodedResponse({
+        statusCode: 404,
+        body: '',
+      });
+    }
 
+    try {
       if (!originalFile?.Body) {
         throw new Error(
           `Could not load original file from ${bucketName}, tried key ${key}`
         );
       }
 
-      const resizedImage = await sharp(
-        Buffer.from(originalFile.Body.toString('base64'))
-      )
+      const resizedImage = await sharp(originalFile.Body as Buffer)
         .resize(width, height, {
           position,
           fit: size,
