@@ -5,8 +5,11 @@
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
     "@babel/preset-env": "^7.11.5",
-    "@babel/preset-typescript": "^7.10.4",
+    "@babel/preset-typescript": "^7.12.1",
     "@bazel/bazelisk": "1.6.1",
     "@bazel/buildifier": "3.4.0",
     "@bazel/ibazel": "latest",
@@ -24,6 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "babel-jest": "^26.3.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.1",
     "commitlint": "^9.0.1",
     "eslint": "^7.9.0",
     "form-data": "^3.0.0",
@@ -36,7 +40,8 @@
     "pretty-quick": "^2.0.2",
     "rollup": "^2.28.2",
     "rollup-plugin-auto-external": "^2.0.0",
-    "ts-jest": "^26.4.0"
+    "ts-jest": "^26.4.0",
+    "tsconfig-paths": "^3.9.0"
   },
   "dependencies": {
     "@aws-cdk/assert": "^1.64.0",
@@ -58,7 +63,7 @@
   },
   "scripts": {
     "// patch": "patch for https://github.com/facebook/jest/pull/9351",
-    "postinstall": "node ./node_modules/patch-package/dist/index.js",
+    "postinstall": "node ./node_modules/patch-package/dist/index.js & rm -rf node_modules/sharp & npm install --arch=x64 --platform=linux sharp",
     "build": "bazel build ${TARGET:-//...}",
     "build:watch": "ibazel build ${TARGET:-//...}",
     "xtest": "bazel test ${TARGET:-//...}",

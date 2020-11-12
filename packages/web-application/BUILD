@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 
 setup_ts_build(
     name = "library",
-    module_name = "@cdkx/web-application",
+    module_name = "~/cdkx/web-application",
     deps = [
         "@npm//@aws-cdk/aws-route53",
         "@npm//@aws-cdk/aws-certificatemanager",

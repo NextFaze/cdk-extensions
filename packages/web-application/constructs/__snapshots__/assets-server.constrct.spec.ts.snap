@@ -142,11 +142,13 @@ Object {
       "Properties": Object {
         "ContentType": "application/json",
         "Description": "Download image with optional resolution",
+        "Name": "RequestModelDownloadGet",
         "RestApiId": Object {
           "Ref": "RestApi0C43BF4B",
         },
         "Schema": Object {
-          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "additionalProperties": false,
           "properties": Object {
             "position": Object {
               "enum": Array [
@@ -161,10 +163,12 @@ Object {
                 "left bottom",
                 "center center",
               ],
+              "title": "Asset position",
               "type": "string",
             },
             "resolution": Object {
-              "pattern": "(\\\\d+|((?i)AUTO))((?i)(x){1})(\\\\d+|((?i)AUTO))",
+              "pattern": "/\\\\d+|AUTO(x{1})\\\\d+|AUTO/gi",
+              "title": "Asset Resolution",
               "type": "string",
             },
             "size": Object {
@@ -175,9 +179,11 @@ Object {
                 "inside",
                 "outside",
               ],
+              "title": "Asset size",
               "type": "string",
             },
           },
+          "title": "Download asset",
           "type": "object",
         },
       },
@@ -786,7 +792,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "RestApiDeployment180EC5030a7e907ecbcd06a46e5dcc34c0ab1052": Object {
+    "RestApiDeployment180EC5038d3d6423a3070f6e03bd5590d95002a7": Object {
       "DependsOn": Array [
         "AssetsServerDownloadGetRequestModel790A29AF",
         "AssetsServerDownloadGetRequestValidator7CC32D1D",
@@ -807,7 +813,7 @@ Object {
     "RestApiDeploymentStageprod3855DE66": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "RestApiDeployment180EC5030a7e907ecbcd06a46e5dcc34c0ab1052",
+          "Ref": "RestApiDeployment180EC5038d3d6423a3070f6e03bd5590d95002a7",
         },
         "RestApiId": Object {
           "Ref": "RestApi0C43BF4B",

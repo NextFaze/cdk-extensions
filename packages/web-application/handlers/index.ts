@@ -1,14 +1,17 @@
 import { S3 } from 'aws-sdk';
+import { AssetsDownloader } from './assets-downloader';
 import { AssetsUploader } from './assets-uploader';
 
-console.log('Bundling handler...');
+// something changed
 
 const s3 = new S3();
 const assetsUploader = new AssetsUploader(s3);
+const assetsDownloader = new AssetsDownloader(s3);
 
 export const assetsUploaderHandler: Function = assetsUploader.run.bind(
   assetsUploader
 );
 
-// TODO: handler
-export const assetsDownloaderHandler: Function = Function;
+export const assetsDownloaderHandler: Function = assetsDownloader.run.bind(
+  assetsDownloader
+);

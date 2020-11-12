@@ -1,6 +1,7 @@
-// babel.config.js
 module.exports = {
+  loaders: {},
   presets: [
+    '@babel/preset-typescript',
     [
       '@babel/preset-env',
       {
@@ -9,5 +10,16 @@ module.exports = {
         },
       },
     ],
+  ],
+  plugins: [
+    '@babel/plugin-proposal-object-rest-spread',
+    'babel-plugin-transform-typescript-metadata',
+    [
+      '@babel/plugin-proposal-decorators',
+      {
+        legacy: true,
+      },
+    ],
+    ['@babel/plugin-proposal-class-properties'],
   ],
 };

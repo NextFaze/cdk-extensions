@@ -11,10 +11,19 @@ import { addCnameRecords } from '../facades/add-cname-records';
 
 export interface IAssetsServerProps {
   bucketConfig?: {
+    /**
+     * @default - New bucket is created and used as a storage for assets
+     */
     useExisting?: Bucket | IBucket;
+    /**
+     * @default none - No cors rules are applied
+     */
     corsRules?: CorsRule[];
   };
-  aliases: string[];
+  /**
+   * @default none No aliases are registered
+   */
+  aliases?: string[];
   domainNameRegistrar: DOMAIN_NAME_REGISTRAR;
   hostedZone: IHostedZone;
   restApiResource: IResource;
@@ -31,13 +40,13 @@ export class AssetsServer extends Construct {
     super(scope, id);
     const {
       bucketConfig,
-      aliases,
+      aliases = [],
       hostedZone,
       domainNameRegistrar,
       certificate,
     } = props;
 
-    if (aliases.length && !certificate) {
+    if (aliases?.length && !certificate) {
       throw new Error(
         'Certificate must be supplied when using custom domain name!'
       );

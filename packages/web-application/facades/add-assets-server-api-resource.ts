@@ -1,5 +1,6 @@
 import {
   JsonSchemaType,
+  JsonSchemaVersion,
   LambdaIntegration,
   Model,
   PassthroughBehavior,
@@ -28,6 +29,7 @@ export function addAssetsServerApiResource(
     environment: {
       BUCKET_NAME: s3Bucket.bucketName,
     },
+    nodeModules: ['sharp'],
   });
   s3Bucket.grantWrite(uploadHandler);
 
@@ -48,6 +50,7 @@ export function addAssetsServerApiResource(
       BUCKET_NAME: s3Bucket.bucketName,
       ASSETS_PUBLIC_HOST: assetsPublicHost,
     },
+    nodeModules: ['sharp'],
   });
   // this handler also takes care of creating missing resolution asset, thus it needs read + write permissions
   s3Bucket.grantReadWrite(downloadHandler);
@@ -64,25 +67,33 @@ export function addAssetsServerApiResource(
       validateRequestParameters: true,
     }
   );
+
   const getDownloadRequestModel = new Model(scope, 'DownloadGetRequestModel', {
     restApi: restApiResource.api,
     description: 'Download image with optional resolution',
     contentType: 'application/json',
+    modelName: 'RequestModelDownloadGet',
     schema: {
+      schema: JsonSchemaVersion.DRAFT7,
+      title: 'Download asset',
       type: JsonSchemaType.OBJECT,
+      additionalProperties: false,
       properties: {
         resolution: {
+          title: 'Asset Resolution',
           type: JsonSchemaType.STRING,
           // matches 123x123 || 13X23, AUTOx123 i.e (auto and x are case insensitive)
-          pattern: '(\\d+|((?i)AUTO))((?i)(x){1})(\\d+|((?i)AUTO))',
+          pattern: new RegExp('\\d+|AUTO(x{1})\\d+|AUTO', 'ig').toString(),
         },
         // based on css object-size attribute
         size: {
+          title: 'Asset size',
           type: JsonSchemaType.STRING,
           enum: ['cover', 'contain', 'fill', 'inside', 'outside'],
         },
         // based on css object-position attribute
         position: {
+          title: 'Asset position',
           type: JsonSchemaType.STRING,
           enum: [
             'top',
