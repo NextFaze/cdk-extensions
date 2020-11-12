@@ -9,7 +9,6 @@ describe('AssetsDownloader', () => {
   let s3Spy: {
     upload: jest.SpyInstance;
     getObject: jest.SpyInstance;
-    headObject: jest.SpyInstance;
   };
   const pathToFile = path.resolve(__dirname, './__test__/assets/airplane.png');
 
@@ -28,11 +27,6 @@ describe('AssetsDownloader', () => {
       getObject: jest.fn().mockReturnValue({
         promise: () => ({
           Body: Buffer.from(fs.readFileSync(pathToFile).buffer),
-        }),
-      }),
-      headObject: jest.fn().mockReturnValue({
-        promise: jest.fn().mockRejectedValue({
-          code: 'NoSuchKey',
         }),
       }),
     };
@@ -82,7 +76,9 @@ describe('AssetsDownloader', () => {
   it('should redirect to original file when no resolution is requested', async () => {
     const response = await assetsDownloader.run(
       getSampleEvent({
-        pathParameters: { key: 'path/to/file.png' },
+        queryStringParameters: {
+          key: 'path/to/file.png',
+        },
       })
     );
     expect(response).toEqual({
@@ -93,38 +89,6 @@ describe('AssetsDownloader', () => {
       },
       isBase64Encoded: false,
       statusCode: 301,
-    });
-  });
-
-  jest.isolateModules(() => {
-    it('should redirect to existing resolution if it already exists', async () => {
-      s3Spy = {
-        ...s3Spy,
-        headObject: jest.fn().mockReturnValue({
-          promise: jest.fn().mockResolvedValue({
-            ETag: 'some etag',
-          }),
-        }),
-      };
-
-      assetsDownloader = new AssetsDownloader((s3Spy as unknown) as S3);
-      const response = await assetsDownloader.run(
-        getSampleEvent({
-          pathParameters: { key: 'path/to/file.png' },
-          queryStringParameters: {
-            resolution: '350X350',
-          },
-        })
-      );
-      expect(response).toEqual({
-        body: '',
-        headers: {
-          'Content-Type': 'application/json',
-          location: 'https://assets-distribution.com/350X350/path/to/file.png',
-        },
-        isBase64Encoded: false,
-        statusCode: 301,
-      });
     });
   });
 
@@ -142,8 +106,8 @@ describe('AssetsDownloader', () => {
       assetsDownloader = new AssetsDownloader((s3Spy as unknown) as S3);
       const response = await assetsDownloader.run(
         getSampleEvent({
-          pathParameters: { key: 'path/to/file.png' },
           queryStringParameters: {
+            key: 'path/to/file.png',
             resolution: '350X350',
           },
         })
@@ -162,8 +126,8 @@ describe('AssetsDownloader', () => {
   it('should create version for given resolution and redirect to it', async () => {
     const response = await assetsDownloader.run(
       getSampleEvent({
-        pathParameters: { key: 'path/to/file.png' },
         queryStringParameters: {
+          key: 'path/to/file.png',
           resolution: '350X350',
         },
       })

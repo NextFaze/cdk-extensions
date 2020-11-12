@@ -36,14 +36,13 @@ export class AssetsDownloader extends BaseHandler {
       });
     }
 
-    const { size = 'cover', position = 'center', resolution } =
+    const { size = 'cover', position = 'center', resolution, key } =
       (event.queryStringParameters as {
+        key: string;
         size: CssSize;
         position: string;
         resolution: string;
       }) ?? {};
-
-    const key = event.pathParameters?.key ?? '';
 
     if (!key) {
       return this.encodedResponse({
@@ -64,31 +63,6 @@ export class AssetsDownloader extends BaseHandler {
           location: `${assetPublicHost}/${key}`,
         },
       });
-    }
-
-    try {
-      const existingVersion = await this.s3
-        .headObject({
-          Bucket: bucketName,
-          Key: `${resolution}/${key}`,
-        })
-        .promise();
-
-      if (existingVersion) {
-        return this.encodedResponse({
-          // permanent redirect to exiting resolution
-          statusCode: 301,
-          body: '',
-          headers: {
-            location: `${assetPublicHost}/${resolution}/${key}`,
-          },
-        });
-      }
-    } catch (err) {
-      // if file some unknown error was thrown, rethrow
-      if (err.code !== 'NoSuchKey') {
-        throw err;
-      }
     }
 
     // when height or width is set to null, sharp auto assumes width/height

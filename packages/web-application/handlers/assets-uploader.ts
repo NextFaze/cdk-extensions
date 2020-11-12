@@ -2,6 +2,7 @@ import { APIGatewayEvent } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 import Busboy from 'busboy';
 import { BaseHandler } from './base-handler';
+import { snakeCase } from 'change-case';
 
 export interface IUploadSuccessBody {
   location: string;
@@ -69,13 +70,16 @@ export class AssetsUploader extends BaseHandler {
 
         const filePublicName = currentFile.fileName ?? currentFile.fieldName;
         console.log('Uploading File: ', filePublicName);
+        const [name, ext] = filePublicName.split('.');
 
         // upload each file to s3
         s3UploadPromises.push(
           this.s3
             .upload({
               Bucket: bucketName,
-              Key: `${parsedBody.fields.s3Prefix}/${filePublicName}`,
+              Key: `${parsedBody.fields.s3Prefix}/${[snakeCase(name), ext].join(
+                '.'
+              )}`,
               ContentType: currentFile.mimeType,
               Body: currentFile.data,
               ContentEncoding: currentFile.encoding,

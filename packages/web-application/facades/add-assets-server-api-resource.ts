@@ -13,6 +13,7 @@ import {
 } from '../constructs/assets-server.construct';
 import { Bucket, IBucket } from '@aws-cdk/aws-s3';
 import path from 'path';
+import { Duration } from '@aws-cdk/core';
 
 export function addAssetsServerApiResource(
   scope: AssetsServer,
@@ -30,6 +31,7 @@ export function addAssetsServerApiResource(
       BUCKET_NAME: s3Bucket.bucketName,
     },
     nodeModules: ['sharp'],
+    timeout: Duration.minutes(5),
   });
   s3Bucket.grantWrite(uploadHandler);
 
@@ -51,12 +53,12 @@ export function addAssetsServerApiResource(
       ASSETS_PUBLIC_HOST: assetsPublicHost,
     },
     nodeModules: ['sharp'],
+    timeout: Duration.minutes(5),
+    memorySize: 1024,
   });
   // this handler also takes care of creating missing resolution asset, thus it needs read + write permissions
   s3Bucket.grantReadWrite(downloadHandler);
-  const downloadResource = restApiResource
-    .addResource('download')
-    .addResource('{key}');
+  const downloadResource = restApiResource.addResource('download');
 
   const getDownloadValidator = new RequestValidator(
     scope,
@@ -78,7 +80,12 @@ export function addAssetsServerApiResource(
       title: 'Download asset',
       type: JsonSchemaType.OBJECT,
       additionalProperties: false,
+      required: ['key'],
       properties: {
+        key: {
+          title: 'Key to object',
+          type: JsonSchemaType.STRING,
+        },
         resolution: {
           title: 'Asset Resolution',
           type: JsonSchemaType.STRING,
@@ -118,6 +125,7 @@ export function addAssetsServerApiResource(
       'application/json': getDownloadRequestModel,
     },
     requestParameters: {
+      'method.request.querystring.key': true,
       'method.request.querystring.resolution': false,
       'method.request.querystring.size': false,
       'method.request.querystring.position': false,

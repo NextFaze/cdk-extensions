@@ -43,12 +43,13 @@
     "cdk-lambda": {
       "context": "node",
       "includeNodeModules": {
-        "aws-sdk": false
+        "aws-sdk": false,
+        "sharp": false
       },
       "sourceMap": false,
       "minify": false,
       "engines": {
-        "node": ">= 10"
+        "node": ">= 12"
       }
     }
   }

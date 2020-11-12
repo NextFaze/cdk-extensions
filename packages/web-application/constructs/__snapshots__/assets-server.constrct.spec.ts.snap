@@ -43,16 +43,28 @@ Object {
       "Description": "S3 key for asset version \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
       "Type": "String",
     },
-    "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4ArtifactHash172D5D65": Object {
-      "Description": "Artifact hash for asset \\"fd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4\\"",
+    "AssetParameters7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2ArtifactHash98C18116": Object {
+      "Description": "Artifact hash for asset \\"7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2\\"",
       "Type": "String",
     },
-    "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3BucketB01E0F65": Object {
-      "Description": "S3 bucket for asset \\"fd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4\\"",
+    "AssetParameters7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2S3BucketA376BAE0": Object {
+      "Description": "S3 bucket for asset \\"7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2\\"",
       "Type": "String",
     },
-    "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3VersionKeyDEF98E36": Object {
-      "Description": "S3 key for asset version \\"fd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4\\"",
+    "AssetParameters7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2S3VersionKey6C2AC3C7": Object {
+      "Description": "S3 key for asset version \\"7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2\\"",
+      "Type": "String",
+    },
+    "AssetParameters9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15ArtifactHashF5EA14D7": Object {
+      "Description": "Artifact hash for asset \\"9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15\\"",
+      "Type": "String",
+    },
+    "AssetParameters9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15S3Bucket8E80FB0C": Object {
+      "Description": "S3 bucket for asset \\"9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15\\"",
+      "Type": "String",
+    },
+    "AssetParameters9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15S3VersionKeyA66F16E6": Object {
+      "Description": "S3 key for asset version \\"9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15\\"",
       "Type": "String",
     },
   },
@@ -150,6 +162,10 @@ Object {
           "$schema": "http://json-schema.org/draft-07/schema#",
           "additionalProperties": false,
           "properties": Object {
+            "key": Object {
+              "title": "Key to object",
+              "type": "string",
+            },
             "position": Object {
               "enum": Array [
                 "top",
@@ -183,6 +199,9 @@ Object {
               "type": "string",
             },
           },
+          "required": Array [
+            "key",
+          ],
           "title": "Download asset",
           "type": "object",
         },
@@ -207,7 +226,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3BucketB01E0F65",
+            "Ref": "AssetParameters9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15S3Bucket8E80FB0C",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -220,7 +239,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3VersionKeyDEF98E36",
+                          "Ref": "AssetParameters9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15S3VersionKeyA66F16E6",
                         },
                       ],
                     },
@@ -233,7 +252,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3VersionKeyDEF98E36",
+                          "Ref": "AssetParameters9aca704acfe28195c0cb5cd4316f142781fcdb803a2a96351f5b915d23dcdd15S3VersionKeyA66F16E6",
                         },
                       ],
                     },
@@ -253,13 +272,15 @@ Object {
           },
         },
         "Handler": "index.assetsDownloaderHandler",
+        "MemorySize": 1024,
         "Role": Object {
           "Fn::GetAtt": Array [
             "AssetsServerDownloadHandlerServiceRole15214DA1",
             "Arn",
           ],
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
+        "Timeout": 300,
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -351,7 +372,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3BucketB01E0F65",
+            "Ref": "AssetParameters7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2S3BucketA376BAE0",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -364,7 +385,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3VersionKeyDEF98E36",
+                          "Ref": "AssetParameters7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2S3VersionKey6C2AC3C7",
                         },
                       ],
                     },
@@ -377,7 +398,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersfd2961d69a2852227775adc97db9157a74b871fe106ec29b0660b730ef83a5b4S3VersionKeyDEF98E36",
+                          "Ref": "AssetParameters7b0e8f1feeb7457edc79c72d840a4e401ec72576f72f137a96947b0e71b303a2S3VersionKey6C2AC3C7",
                         },
                       ],
                     },
@@ -402,7 +423,8 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
+        "Timeout": 300,
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -792,12 +814,11 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "RestApiDeployment180EC5038d3d6423a3070f6e03bd5590d95002a7": Object {
+    "RestApiDeployment180EC503f44a25c777dbf9d209df5eaafae5b2ee": Object {
       "DependsOn": Array [
         "AssetsServerDownloadGetRequestModel790A29AF",
         "AssetsServerDownloadGetRequestValidator7CC32D1D",
-        "RestApidownloadkeyGETEAC97FCF",
-        "RestApidownloadkey7599E968",
+        "RestApidownloadGET5DC24312",
         "RestApidownload1EFA4094",
         "RestApiuploadPOST0F5E2849",
         "RestApiuploadB3DA5A15",
@@ -813,7 +834,7 @@ Object {
     "RestApiDeploymentStageprod3855DE66": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "RestApiDeployment180EC5038d3d6423a3070f6e03bd5590d95002a7",
+          "Ref": "RestApiDeployment180EC503f44a25c777dbf9d209df5eaafae5b2ee",
         },
         "RestApiId": Object {
           "Ref": "RestApi0C43BF4B",
@@ -837,97 +858,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::Resource",
     },
-    "RestApidownloadkey7599E968": Object {
-      "Properties": Object {
-        "ParentId": Object {
-          "Ref": "RestApidownload1EFA4094",
-        },
-        "PathPart": "{key}",
-        "RestApiId": Object {
-          "Ref": "RestApi0C43BF4B",
-        },
-      },
-      "Type": "AWS::ApiGateway::Resource",
-    },
-    "RestApidownloadkeyGETApiPermissionRestApiGETdownloadkeyFFBFDD86": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "AssetsServerDownloadHandler2BCA1536",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "RestApi0C43BF4B",
-              },
-              "/",
-              Object {
-                "Ref": "RestApiDeploymentStageprod3855DE66",
-              },
-              "/GET/download/*",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "RestApidownloadkeyGETApiPermissionTestRestApiGETdownloadkey87DBF8A4": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "AssetsServerDownloadHandler2BCA1536",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "RestApi0C43BF4B",
-              },
-              "/test-invoke-stage/GET/download/*",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "RestApidownloadkeyGETEAC97FCF": Object {
+    "RestApidownloadGET5DC24312": Object {
       "Properties": Object {
         "AuthorizationType": "NONE",
         "HttpMethod": "GET",
@@ -964,6 +895,7 @@ Object {
           },
         },
         "RequestParameters": Object {
+          "method.request.querystring.key": true,
           "method.request.querystring.position": false,
           "method.request.querystring.resolution": false,
           "method.request.querystring.size": false,
@@ -972,13 +904,91 @@ Object {
           "Ref": "AssetsServerDownloadGetRequestValidator7CC32D1D",
         },
         "ResourceId": Object {
-          "Ref": "RestApidownloadkey7599E968",
+          "Ref": "RestApidownload1EFA4094",
         },
         "RestApiId": Object {
           "Ref": "RestApi0C43BF4B",
         },
       },
       "Type": "AWS::ApiGateway::Method",
+    },
+    "RestApidownloadGETApiPermissionRestApiGETdownload3EABF1B3": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "AssetsServerDownloadHandler2BCA1536",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              Object {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/GET/download",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApidownloadGETApiPermissionTestRestApiGETdownload30750264": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "AssetsServerDownloadHandler2BCA1536",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/GET/download",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
     },
     "RestApiuploadB3DA5A15": Object {
       "Properties": Object {
