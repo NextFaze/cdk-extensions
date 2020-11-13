@@ -14,6 +14,7 @@ import {
 import { Bucket, IBucket } from '@aws-cdk/aws-s3';
 import path from 'path';
 import { Duration } from '@aws-cdk/core';
+import { Runtime } from '@aws-cdk/aws-lambda';
 
 export function addAssetsServerApiResource(
   scope: AssetsServer,
@@ -32,6 +33,7 @@ export function addAssetsServerApiResource(
     },
     timeout: Duration.minutes(5),
     ...getEnvSpecificHandlerConfig(),
+    runtime: Runtime.NODEJS_12_X,
   });
   s3Bucket.grantWrite(uploadHandler);
 
@@ -87,6 +89,7 @@ export function addAssetsServerApiResource(
       ASSETS_PUBLIC_HOST: assetsPublicHost,
     },
     timeout: Duration.minutes(5),
+    runtime: Runtime.NODEJS_12_X,
     // sharp will need to load image in memory to be able to quickly manipulate it
     memorySize: 1024,
     ...getEnvSpecificHandlerConfig(),
