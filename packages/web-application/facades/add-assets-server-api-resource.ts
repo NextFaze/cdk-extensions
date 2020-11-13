@@ -30,9 +30,8 @@ export function addAssetsServerApiResource(
     environment: {
       BUCKET_NAME: s3Bucket.bucketName,
     },
-    nodeModules: ['sharp'],
     timeout: Duration.minutes(5),
-    forceDockerBundling: true,
+    ...getEnvSpecificHandlerConfig(),
   });
   s3Bucket.grantWrite(uploadHandler);
 
@@ -87,10 +86,10 @@ export function addAssetsServerApiResource(
       BUCKET_NAME: s3Bucket.bucketName,
       ASSETS_PUBLIC_HOST: assetsPublicHost,
     },
-    nodeModules: ['sharp'],
     timeout: Duration.minutes(5),
+    // sharp will need to load image in memory to be able to quickly manipulate it
     memorySize: 1024,
-    forceDockerBundling: process.env.NODE_ENV === 'test' ? false : true,
+    ...getEnvSpecificHandlerConfig(),
   });
   // this handler also takes care of creating missing resolution asset, thus it needs read + write permissions
   s3Bucket.grantReadWrite(downloadHandler);
@@ -114,4 +113,18 @@ export function addAssetsServerApiResource(
       'method.request.querystring.position': false,
     },
   });
+}
+
+function getEnvSpecificHandlerConfig() {
+  if (process.env.NODE_ENV === 'test') {
+    return {
+      externalModules: ['sharp'],
+    };
+  } else {
+    return {
+      nodeModules: ['sharp'],
+      // linux based libs needs to be installed to lambda runtime, there for force build in docker for non-prod envs
+      forceDockerBundling: true,
+    };
+  }
 }
