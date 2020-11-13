@@ -32,16 +32,51 @@ export function addAssetsServerApiResource(
     },
     nodeModules: ['sharp'],
     timeout: Duration.minutes(5),
+    forceDockerBundling: true,
   });
   s3Bucket.grantWrite(uploadHandler);
 
+  const uploadRequestModel = new Model(scope, 'UploadAssets', {
+    restApi: restApiResource.api,
+    description: 'Upload files',
+    contentType: 'multipart/form-data',
+    modelName: 'UploadAssets',
+    schema: {
+      schema: JsonSchemaVersion.DRAFT7,
+      title: 'Upload assets',
+      type: JsonSchemaType.OBJECT,
+      additionalProperties: true,
+      required: ['s3Prefix'],
+      properties: {
+        s3Prefix: {
+          title: 'Directory to upload files under',
+          type: JsonSchemaType.STRING,
+        },
+      },
+    },
+  });
   const uploadResource = restApiResource.addResource('upload');
+  const uploadBodyValidator = new RequestValidator(
+    scope,
+    'UploadBodyValidator',
+    {
+      requestValidatorName: 'Upload Body validator',
+      validateRequestBody: true,
+      restApi: restApiResource.api,
+    }
+  );
   uploadResource.addMethod(
     'POST',
     new LambdaIntegration(uploadHandler, {
       // only supports uploading images with form-data at the moment
       passthroughBehavior: PassthroughBehavior.NEVER,
-    })
+    }),
+    {
+      requestValidator: uploadBodyValidator,
+      requestModels: {
+        'multipart/form-data': uploadRequestModel,
+      },
+    }
   );
 
   // download image
@@ -55,75 +90,23 @@ export function addAssetsServerApiResource(
     nodeModules: ['sharp'],
     timeout: Duration.minutes(5),
     memorySize: 1024,
+    forceDockerBundling: process.env.NODE_ENV === 'test' ? false : true,
   });
   // this handler also takes care of creating missing resolution asset, thus it needs read + write permissions
   s3Bucket.grantReadWrite(downloadHandler);
   const downloadResource = restApiResource.addResource('download');
-
-  const getDownloadValidator = new RequestValidator(
+  const downloadValidator = new RequestValidator(
     scope,
-    'DownloadGetRequestValidator',
+    'DownloadParamsValidator',
     {
       restApi: restApiResource.api,
-      requestValidatorName: 'Download Get Validator',
+      requestValidatorName: 'Download Params Validator',
       validateRequestParameters: true,
     }
   );
 
-  const getDownloadRequestModel = new Model(scope, 'DownloadGetRequestModel', {
-    restApi: restApiResource.api,
-    description: 'Download image with optional resolution',
-    contentType: 'application/json',
-    modelName: 'RequestModelDownloadGet',
-    schema: {
-      schema: JsonSchemaVersion.DRAFT7,
-      title: 'Download asset',
-      type: JsonSchemaType.OBJECT,
-      additionalProperties: false,
-      required: ['key'],
-      properties: {
-        key: {
-          title: 'Key to object',
-          type: JsonSchemaType.STRING,
-        },
-        resolution: {
-          title: 'Asset Resolution',
-          type: JsonSchemaType.STRING,
-          // matches 123x123 || 13X23, AUTOx123 i.e (auto and x are case insensitive)
-          pattern: new RegExp('\\d+|AUTO(x{1})\\d+|AUTO', 'ig').toString(),
-        },
-        // based on css object-size attribute
-        size: {
-          title: 'Asset size',
-          type: JsonSchemaType.STRING,
-          enum: ['cover', 'contain', 'fill', 'inside', 'outside'],
-        },
-        // based on css object-position attribute
-        position: {
-          title: 'Asset position',
-          type: JsonSchemaType.STRING,
-          enum: [
-            'top',
-            'right',
-            'bottom',
-            'left',
-            'center',
-            'right top',
-            'right bottom',
-            'left top',
-            'left bottom',
-            'center center',
-          ],
-        },
-      },
-    },
-  });
-
   downloadResource.addMethod('GET', new LambdaIntegration(downloadHandler), {
-    requestValidator: getDownloadValidator,
-    requestModels: {
-      'application/json': getDownloadRequestModel,
-    },
+    requestValidator: downloadValidator,
     requestParameters: {
       'method.request.querystring.key': true,
       'method.request.querystring.resolution': false,
