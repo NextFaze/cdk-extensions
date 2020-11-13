@@ -132,6 +132,7 @@ describe('AssetsDownloader', () => {
         },
       })
     );
+    expect(s3Spy.upload).toHaveBeenCalledTimes(1);
     expect(response).toEqual({
       body: '',
       headers: {

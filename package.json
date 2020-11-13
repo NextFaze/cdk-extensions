@@ -63,7 +63,7 @@
   },
   "scripts": {
     "// patch": "patch for https://github.com/facebook/jest/pull/9351",
-    "postinstall": "node ./node_modules/patch-package/dist/index.js & rm -rf node_modules/sharp & npm install --arch=x64 --platform=linux sharp",
+    "postinstall": "node ./node_modules/patch-package/dist/index.js",
     "build": "bazel build ${TARGET:-//...}",
     "build:watch": "ibazel build ${TARGET:-//...}",
     "xtest": "bazel test ${TARGET:-//...}",
