@@ -54,7 +54,7 @@ describe('PreSignedUrlGenerator', () => {
     expect(s3Spy.createPresignedPost).toHaveBeenCalledTimes(1);
     expect(s3Spy.createPresignedPost).toHaveBeenCalledWith({
       Bucket: 'test-bucket',
-      Conditions: [['content-length-range', '1', '104857600']],
+      Conditions: [['content-length-range', 1, 104857600]],
       Expires: 3600,
       Fields: {
         'Content-Type': 'image/png',
