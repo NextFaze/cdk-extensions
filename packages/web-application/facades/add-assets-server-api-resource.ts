@@ -26,13 +26,14 @@ export function addAssetsServerApiResource(
 ): void {
   // assets uploader handler
   const uploadHandler = new NodejsFunction(scope, 'UploadHandler', {
-    entry: path.resolve(__dirname, '../handlers/index.ts'),
-    handler: 'assetsUploaderHandler',
+    entry: path.resolve(
+      __dirname,
+      '../handlers/entries/assets-uploader-handler.ts'
+    ),
     environment: {
       BUCKET_NAME: s3Bucket.bucketName,
     },
     timeout: Duration.minutes(5),
-    ...getEnvSpecificHandlerConfig(),
     runtime: Runtime.NODEJS_12_X,
   });
   s3Bucket.grantWrite(uploadHandler);
@@ -82,8 +83,10 @@ export function addAssetsServerApiResource(
 
   // download image
   const downloadHandler = new NodejsFunction(scope, 'DownloadHandler', {
-    entry: path.resolve(__dirname, '../handlers/index.ts'),
-    handler: 'assetsDownloaderHandler',
+    entry: path.resolve(
+      __dirname,
+      '../handlers/entries/assets-downloader-handler.ts'
+    ),
     environment: {
       BUCKET_NAME: s3Bucket.bucketName,
       ASSETS_PUBLIC_HOST: assetsPublicHost,
@@ -116,6 +119,45 @@ export function addAssetsServerApiResource(
       'method.request.querystring.position': false,
     },
   });
+
+  // get pre-signedPost url
+  const preSignedPostUrlHandler = new NodejsFunction(
+    scope,
+    'PreSignedPostUrlHandler',
+    {
+      entry: path.resolve(
+        __dirname,
+        '../handlers/entries/get-pre-signed-post-url.ts'
+      ),
+      environment: {
+        BUCKET_NAME: s3Bucket.bucketName,
+      },
+      runtime: Runtime.NODEJS_12_X,
+    }
+  );
+  s3Bucket.grantWrite(preSignedPostUrlHandler);
+  const preSignedPostUrlResource = restApiResource.addResource('uploadUrl');
+
+  const UploadUrlValidator = new RequestValidator(
+    scope,
+    'UploadUrlRequestValidator',
+    {
+      restApi: restApiResource.api,
+      requestValidatorName: 'UploadUrl Request validator  ',
+      validateRequestParameters: true,
+    }
+  );
+  preSignedPostUrlResource.addMethod(
+    'GET',
+    new LambdaIntegration(preSignedPostUrlHandler),
+    {
+      requestValidator: UploadUrlValidator,
+      requestParameters: {
+        'method.request.querystring.key': true,
+        'method.request.querystring.expires': false,
+      },
+    }
+  );
 }
 
 function getEnvSpecificHandlerConfig() {

@@ -43,16 +43,40 @@ Object {
       "Description": "S3 key for asset version \\"19e461d2ff1a5b90438fed6ceee4c197d7efee8712a6f76d85b501ab20bfb1a2\\"",
       "Type": "String",
     },
-    "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bArtifactHashD5CF89E7": Object {
-      "Description": "Artifact hash for asset \\"2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7b\\"",
+    "AssetParametersbd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9ArtifactHashB3BF0B80": Object {
+      "Description": "Artifact hash for asset \\"bd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9\\"",
       "Type": "String",
     },
-    "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3Bucket776C74D7": Object {
-      "Description": "S3 bucket for asset \\"2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7b\\"",
+    "AssetParametersbd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9S3BucketA9139AD0": Object {
+      "Description": "S3 bucket for asset \\"bd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9\\"",
       "Type": "String",
     },
-    "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3VersionKeyC2E68909": Object {
-      "Description": "S3 key for asset version \\"2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7b\\"",
+    "AssetParametersbd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9S3VersionKey1020D170": Object {
+      "Description": "S3 key for asset version \\"bd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9\\"",
+      "Type": "String",
+    },
+    "AssetParameterse0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200ArtifactHash1768FAF8": Object {
+      "Description": "Artifact hash for asset \\"e0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200\\"",
+      "Type": "String",
+    },
+    "AssetParameterse0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200S3BucketC150B295": Object {
+      "Description": "S3 bucket for asset \\"e0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200\\"",
+      "Type": "String",
+    },
+    "AssetParameterse0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200S3VersionKey0122253A": Object {
+      "Description": "S3 key for asset version \\"e0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200\\"",
+      "Type": "String",
+    },
+    "AssetParametersf9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075cArtifactHashE4AE5B20": Object {
+      "Description": "Artifact hash for asset \\"f9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075c\\"",
+      "Type": "String",
+    },
+    "AssetParametersf9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075cS3BucketB5B2D03F": Object {
+      "Description": "S3 bucket for asset \\"f9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075c\\"",
+      "Type": "String",
+    },
+    "AssetParametersf9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075cS3VersionKey16926C1F": Object {
+      "Description": "S3 key for asset version \\"f9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075c\\"",
       "Type": "String",
     },
   },
@@ -146,7 +170,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3Bucket776C74D7",
+            "Ref": "AssetParameterse0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200S3BucketC150B295",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -159,7 +183,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3VersionKeyC2E68909",
+                          "Ref": "AssetParameterse0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200S3VersionKey0122253A",
                         },
                       ],
                     },
@@ -172,7 +196,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3VersionKeyC2E68909",
+                          "Ref": "AssetParameterse0dd962edcac223cf930ffb766e71c83300818d8aabc1ff14d574f26c5fa3200S3VersionKey0122253A",
                         },
                       ],
                     },
@@ -191,7 +215,7 @@ Object {
             },
           },
         },
-        "Handler": "index.assetsDownloaderHandler",
+        "Handler": "index.handler",
         "MemorySize": 1024,
         "Role": Object {
           "Fn::GetAtt": Array [
@@ -294,6 +318,146 @@ Object {
       },
       "Type": "AWS::ApiGateway::RequestValidator",
     },
+    "AssetsServerPreSignedPostUrlHandlerF79D89BE": Object {
+      "DependsOn": Array [
+        "AssetsServerPreSignedPostUrlHandlerServiceRoleDefaultPolicy6846A5C3",
+        "AssetsServerPreSignedPostUrlHandlerServiceRole78AD0D90",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersf9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075cS3BucketB5B2D03F",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersf9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075cS3VersionKey16926C1F",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersf9b4cec0462bcd4756af6f671602dbd34f871a1f7ed4c44aad4855956688075cS3VersionKey16926C1F",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "BUCKET_NAME": Object {
+              "Ref": "OriginBucketCA772B8F",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "AssetsServerPreSignedPostUrlHandlerServiceRole78AD0D90",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "AssetsServerPreSignedPostUrlHandlerServiceRole78AD0D90": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "AssetsServerPreSignedPostUrlHandlerServiceRoleDefaultPolicy6846A5C3": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "OriginBucketCA772B8F",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "OriginBucketCA772B8F",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AssetsServerPreSignedPostUrlHandlerServiceRoleDefaultPolicy6846A5C3",
+        "Roles": Array [
+          Object {
+            "Ref": "AssetsServerPreSignedPostUrlHandlerServiceRole78AD0D90",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "AssetsServerUploadAssets55A49D80": Object {
       "Properties": Object {
         "ContentType": "multipart/form-data",
@@ -338,7 +502,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3Bucket776C74D7",
+            "Ref": "AssetParametersbd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9S3BucketA9139AD0",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -351,7 +515,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3VersionKeyC2E68909",
+                          "Ref": "AssetParametersbd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9S3VersionKey1020D170",
                         },
                       ],
                     },
@@ -364,7 +528,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters2f1fdeed0fba9d3de2198517a1ed56f6ac620abbd34b4645585c1cccc412fb7bS3VersionKeyC2E68909",
+                          "Ref": "AssetParametersbd867fa3e69c3a53de69065f6f1c7f5c05bee6b9ddf2a5e994d7b34f69c5cba9S3VersionKey1020D170",
                         },
                       ],
                     },
@@ -382,7 +546,7 @@ Object {
             },
           },
         },
-        "Handler": "index.assetsUploaderHandler",
+        "Handler": "index.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
             "AssetsServerUploadHandlerServiceRoleCE5B2547",
@@ -470,6 +634,16 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "AssetsServerUploadUrlRequestValidator45A31D25": Object {
+      "Properties": Object {
+        "Name": "UploadUrl Request validator  ",
+        "RestApiId": Object {
+          "Ref": "RestApi0C43BF4B",
+        },
+        "ValidateRequestParameters": true,
+      },
+      "Type": "AWS::ApiGateway::RequestValidator",
     },
     "HostedZoneDB99F866": Object {
       "Properties": Object {
@@ -780,15 +954,18 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "RestApiDeployment180EC503e5206bd8dcc6b3204f0e33ad3a45098e": Object {
+    "RestApiDeployment180EC503f8acaceb63c2a4bea939744b9f5674bf": Object {
       "DependsOn": Array [
         "AssetsServerDownloadParamsValidator52D4EFCC",
         "AssetsServerUploadAssets55A49D80",
         "AssetsServerUploadBodyValidator0D797560",
+        "AssetsServerUploadUrlRequestValidator45A31D25",
         "RestApidownloadGET5DC24312",
         "RestApidownload1EFA4094",
         "RestApiuploadPOST0F5E2849",
         "RestApiuploadB3DA5A15",
+        "RestApiuploadUrlGETBC15159F",
+        "RestApiuploadUrl930BC1D8",
       ],
       "Properties": Object {
         "Description": "Automatically created by the RestApi construct",
@@ -801,7 +978,7 @@ Object {
     "RestApiDeploymentStageprod3855DE66": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "RestApiDeployment180EC503e5206bd8dcc6b3204f0e33ad3a45098e",
+          "Ref": "RestApiDeployment180EC503f8acaceb63c2a4bea939744b9f5674bf",
         },
         "RestApiId": Object {
           "Ref": "RestApi0C43BF4B",
@@ -1093,6 +1270,146 @@ Object {
         },
       },
       "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiuploadUrl930BC1D8": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "RestApi0C43BF4B",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "uploadUrl",
+        "RestApiId": Object {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "RestApiuploadUrlGETApiPermissionRestApiGETuploadUrlE81A1BBC": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "AssetsServerPreSignedPostUrlHandlerF79D89BE",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/",
+              Object {
+                "Ref": "RestApiDeploymentStageprod3855DE66",
+              },
+              "/GET/uploadUrl",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiuploadUrlGETApiPermissionTestRestApiGETuploadUrl536BCD14": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "AssetsServerPreSignedPostUrlHandlerF79D89BE",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "RestApi0C43BF4B",
+              },
+              "/test-invoke-stage/GET/uploadUrl",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "RestApiuploadUrlGETBC15159F": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "AssetsServerPreSignedPostUrlHandlerF79D89BE",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "RequestParameters": Object {
+          "method.request.querystring.expires": false,
+          "method.request.querystring.key": true,
+        },
+        "RequestValidatorId": Object {
+          "Ref": "AssetsServerUploadUrlRequestValidator45A31D25",
+        },
+        "ResourceId": Object {
+          "Ref": "RestApiuploadUrl930BC1D8",
+        },
+        "RestApiId": Object {
+          "Ref": "RestApi0C43BF4B",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
     },
   },
 }

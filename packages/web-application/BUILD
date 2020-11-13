@@ -15,15 +15,19 @@ setup_ts_build(
         "@npm//@aws-cdk/aws-s3",
         "@npm//@aws-cdk/aws-ssm",
         "@npm//@aws-cdk/aws-iam",
-        "@npm//busboy",
-        "@npm//sharp",
-        "@npm//@types/busboy",
+        "@npm//@aws-cdk/aws-cloudfront-origins",
         "@npm//@aws-cdk/aws-apigateway",
         "@npm//@aws-cdk/aws-lambda-nodejs",
+        '@npm//@aws-cdk/aws-lambda',
+        "@npm//busboy",
+        "@npm//sharp",
         "@npm//aws-sdk",
+        "@npm//mime",
+        "@npm//@types/mime",
+        # types
+        "@npm//@types/busboy",
         "@npm//@types/aws-lambda",
         "@npm//@types/sharp",
-        "@npm//@aws-cdk/aws-cloudfront-origins"
     ],
 )
 

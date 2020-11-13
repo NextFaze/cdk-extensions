@@ -1,7 +1,7 @@
 {
   "name": "@cdkx/web-application",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "Construct to setup hosting for static web application",
+  "description": "Static web application hosting related constructs",
   "main": "index.js",
   "private": false,
   "repository": {
@@ -24,7 +24,8 @@
   "dependencies": {
     "change-case": "^4.1.1",
     "busboy": "^0.3.1",
-    "sharp": "^0.26.2"
+    "sharp": "^0.26.2",
+    "mime": "^2.4.6"
   },
   "keywords": [
     "cdk",
@@ -40,8 +41,7 @@
     "cdk-lambda": {
       "context": "node",
       "includeNodeModules": {
-        "aws-sdk": false,
-        "sharp": false
+        "aws-sdk": false
       },
       "sourceMap": false,
       "minify": false,
