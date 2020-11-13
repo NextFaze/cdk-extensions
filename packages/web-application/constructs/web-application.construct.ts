@@ -1,5 +1,5 @@
 import { StringParameter } from '@aws-cdk/aws-ssm';
-import { Construct } from '@aws-cdk/core';
+import { Construct, RemovalPolicy } from '@aws-cdk/core';
 import { IHostedZone } from '@aws-cdk/aws-route53';
 import { PriceClass } from '@aws-cdk/aws-cloudfront';
 import { ICertificate } from '@aws-cdk/aws-certificatemanager';
@@ -30,6 +30,10 @@ export interface IWebApplicationProps {
     initialValue: string;
     allowedPattern?: string;
   };
+  /**
+   * @default orphaned - resources will be orphaned, choose destroy to auto remove on destroy
+   */
+  removalPolicy?: RemovalPolicy;
 }
 
 export class WebApplication extends Construct {

@@ -8,8 +8,10 @@ export function createOriginBucket(
   scope: WebApplication,
   props: IWebApplicationProps
 ): Bucket {
-  const { defaultRootObject, errorRootObject } = props;
+  const { defaultRootObject, errorRootObject, removalPolicy } = props;
   return new Bucket(scope, 'OriginBucket', {
+    removalPolicy,
+    versioned: true,
     websiteIndexDocument: defaultRootObject || 'index.html',
     websiteErrorDocument: errorRootObject || 'index.html',
   });

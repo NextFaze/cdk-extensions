@@ -288,6 +288,9 @@ Object {
     "WebApplicationOriginBucket7D83F54A": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
         "WebsiteConfiguration": Object {
           "ErrorDocument": "index.html",
           "IndexDocument": "index.html",
@@ -699,6 +702,9 @@ Object {
     "WebApplicationOriginBucket7D83F54A": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
         "WebsiteConfiguration": Object {
           "ErrorDocument": "index.html",
           "IndexDocument": "index.html",
@@ -1031,6 +1037,9 @@ Object {
     "WebApplicationOriginBucket7D83F54A": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
         "WebsiteConfiguration": Object {
           "ErrorDocument": "index.html",
           "IndexDocument": "index.html",

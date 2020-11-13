@@ -1,3 +1,4 @@
+import { ICertificate } from '@aws-cdk/aws-certificatemanager';
 import {
   Distribution,
   OriginAccessIdentity,
@@ -12,7 +13,12 @@ export function addAssetsServerDistribution(
   {
     s3BucketSource,
     aliases,
-  }: { s3BucketSource: Bucket | IBucket; aliases: string[] }
+    certificate,
+  }: {
+    s3BucketSource: Bucket | IBucket;
+    aliases: string[];
+    certificate?: ICertificate;
+  }
 ): Distribution {
   const originAccessIdentity = new OriginAccessIdentity(
     scope,
@@ -32,5 +38,6 @@ export function addAssetsServerDistribution(
     },
     domainNames: aliases,
     comment: 'Auto generated distribution for static assets',
+    certificate,
   });
 }

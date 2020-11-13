@@ -19,11 +19,11 @@ export function addCnameRecords(
   }
 ): void {
   if (domainNameRegistrar === DOMAIN_NAME_REGISTRAR.AWS) {
-    aliases.forEach((alias) => {
+    aliases.forEach((alias): void => {
       new CnameRecord(scope, pascalCase(`${alias}CnameRecord`), {
         zone: hostedZone,
         recordName: alias,
-        domainName: distribution.domainName,
+        domainName: distribution.distributionDomainName,
       });
     });
   }
