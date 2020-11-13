@@ -21,10 +21,10 @@ setup_ts_build(
         '@npm//@aws-cdk/aws-lambda',
         "@npm//busboy",
         "@npm//sharp",
-        "@npm//aws-sdk",
+        "@npm//change-case",
         "@npm//mime",
-        "@npm//@types/mime",
         # types
+        "@npm//@types/mime",
         "@npm//@types/busboy",
         "@npm//@types/aws-lambda",
         "@npm//@types/sharp",

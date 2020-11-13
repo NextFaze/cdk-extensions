@@ -6,6 +6,12 @@ import { AssetsServer, DOMAIN_NAME_REGISTRAR } from '~/cdkx/web-application';
 export class MyAwesomeSpaAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    const myExistingApi = new RestApi(this, 'CDKXExampleApi', {
+      // all all binary media types
+      binaryMediaTypes: ['*/*'],
+    });
+
     new AssetsServer(this, 'AssetsServer', {
       domainNameRegistrar: DOMAIN_NAME_REGISTRAR.NONE,
       hostedZone: HostedZone.fromHostedZoneAttributes(
@@ -16,9 +22,7 @@ export class MyAwesomeSpaAppStack extends cdk.Stack {
           zoneName: 'faze.biz',
         }
       ),
-      restApiResource: new RestApi(this, 'CDKXExampleApi', {
-        binaryMediaTypes: ['*/*'],
-      }).root,
+      restApiResource: myExistingApi.root,
     });
   }
 }
