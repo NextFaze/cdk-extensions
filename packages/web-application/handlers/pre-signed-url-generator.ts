@@ -27,13 +27,20 @@ export class PreSignedUrlGenerator extends BaseHandler {
 
     const { key, expires } = event.queryStringParameters as {
       key: string;
-      expires: string;
+      expires?: string;
     };
+    const maxSize =
+      (event.queryStringParameters as { 'max-size'?: string })['max-size'] ??
+      '104857600';
 
     const uploadPostUrl = this.s3.createPresignedPost({
       // when no expiry is explicitly set, it is defaulted to 1 hour
       Expires: expires ? Number.parseInt(expires) : 3600,
       Bucket: bucketName,
+      Conditions: [
+        // by default max 100mb limit applies
+        ['content-length-range', 1, parseInt(maxSize)],
+      ],
       Fields: {
         key: key,
         'Content-Type': mime.getType(key),

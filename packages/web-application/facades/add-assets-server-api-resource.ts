@@ -155,6 +155,7 @@ export function addAssetsServerApiResource(
       requestParameters: {
         'method.request.querystring.key': true,
         'method.request.querystring.expires': false,
+        'method.request.querystring.max-size': false,
       },
     }
   );

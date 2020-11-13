@@ -46,10 +46,21 @@ describe('PreSignedUrlGenerator', () => {
     const response = await preSignedUrlGen.run(
       getSampleEvent({
         queryStringParameters: {
-          key: 'path-to-file',
+          key: 'path-to-file.png',
         },
       })
     );
+
+    expect(s3Spy.createPresignedPost).toHaveBeenCalledTimes(1);
+    expect(s3Spy.createPresignedPost).toHaveBeenCalledWith({
+      Bucket: 'test-bucket',
+      Conditions: [['content-length-range', '1', '104857600']],
+      Expires: 3600,
+      Fields: {
+        'Content-Type': 'image/png',
+        key: 'path-to-file.png',
+      },
+    });
 
     expect(response).toEqual({
       body: '{"url":"https://some-s3-post-signed-url","fields":[]}',
