@@ -8,4 +8,9 @@ new MyAwesomeSpaAppStack(app, 'MyAwesomeSpaAppStack', {
   env: {
     region: 'ap-southeast-2',
   },
+  cdnAliases: ['my-cdn.domain.com'],
+  webAliases: ['my-app.domain.com'],
+  zoneId: '1231241231',
+  zoneName: 'domain.com',
+  certificateArn: 'arn:certificate',
 });

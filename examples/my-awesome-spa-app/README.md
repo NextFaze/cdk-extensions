@@ -1,14 +1,9 @@
-# Welcome to your CDK TypeScript project!
+# My Awesome SPA application
 
-This is a blank project for TypeScript development with CDK.
+Example SPA application. This example app will create all required resources to host an SPA app over s3 distributed by Cloudfront.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Deploying
 
-## Useful commands
-
-- `npm run build` compile typescript to js
-- `npm run watch` watch for changes and compile
-- `npm run test` perform the jest unit tests
-- `cdk deploy` deploy this stack to your default AWS account/region
-- `cdk diff` compare deployed stack with current state
-- `cdk synth` emits the synthesized CloudFormation template
+- change app params under bin/ to deploy it to your configured env
+- `npx cdk deploy`
+  This will deploy cloudformation stack to default env configured with aws cli.
