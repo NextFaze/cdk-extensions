@@ -7,33 +7,49 @@ package(default_visibility = ["//visibility:public"])
 
 setup_ts_build(
     name = "library",
-    module_name = "@cdkx/web-application",
+    module_name = "~/cdkx/web-application",
     deps = [
         "@npm//@aws-cdk/aws-route53",
         "@npm//@aws-cdk/aws-certificatemanager",
         "@npm//@aws-cdk/aws-cloudfront",
         "@npm//@aws-cdk/aws-s3",
         "@npm//@aws-cdk/aws-ssm",
-        "@npm//@aws-cdk/aws-iam"
+        "@npm//@aws-cdk/aws-iam",
+        "@npm//@aws-cdk/aws-cloudfront-origins",
+        "@npm//@aws-cdk/aws-apigateway",
+        "@npm//@aws-cdk/aws-lambda-nodejs",
+        '@npm//@aws-cdk/aws-lambda',
+        "@npm//busboy",
+        "@npm//sharp",
+        "@npm//change-case",
+        "@npm//mime",
+        # types
+        "@npm//@types/mime",
+        "@npm//@types/busboy",
+        "@npm//@types/aws-lambda",
+        "@npm//@types/sharp",
     ],
 )
 
-setup_ts_test(
-    name = "test_library",
-    deps = [
-        ":library",
-        "@npm//@aws-cdk/aws-route53",
-        "@npm//@aws-cdk/aws-certificatemanager",
-        "@npm//@aws-cdk/aws-iam"
-    ],
-)
+# Using jest test 
+# setup_ts_test(
+#     name = "test_library",
+#     deps = [
+#         ":library",
+#         "@npm//@aws-cdk/aws-route53",
+#         "@npm//@aws-cdk/aws-certificatemanager",
+#         "@npm//@aws-cdk/aws-iam",
+#         "@npm//form-data",
+#         "@npm//aws-sdk"
+#     ],
+# )
 
-jest_test(
-    name = "test",
-    deps = [
-        ":test_library",
-    ],
-)
+# jest_test(
+#     name = "test",
+#     deps = [
+#         ":test_library",
+#     ],
+# )
 
 cdkx_package(
     name = "web-application",

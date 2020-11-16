@@ -1,7 +1,7 @@
 {
   "name": "@cdkx/web-application",
   "version": "0.0.0-PLACEHOLDER",
-  "description": "Construct to setup hosting for static web application",
+  "description": "Static web application hosting related constructs",
   "main": "index.js",
   "private": false,
   "repository": {
@@ -10,16 +10,22 @@
   },
   "module": "ES6",
   "peerDependencies": {
-    "@aws-cdk/core": "^1.60.0",
-    "@aws-cdk/aws-cloudfront": "^1.60.0",
-    "@aws-cdk/aws-route53": "^1.60.0",
-    "@aws-cdk/aws-s3": "^1.60.0",
-    "@aws-cdk/aws-certificatemanager": "^1.60.0",
-    "@aws-cdk/aws-ssm": "^1.60.0",
-    "@aws-cdk/aws-iam": "^1.60.0"
+    "@aws-cdk/core": "^1.64.0",
+    "@aws-cdk/aws-cloudfront": "^1.64.0",
+    "@aws-cdk/aws-route53": "^1.64.0",
+    "@aws-cdk/aws-s3": "^1.64.0",
+    "@aws-cdk/aws-certificatemanager": "^1.64.0",
+    "@aws-cdk/aws-ssm": "^1.64.0",
+    "@aws-cdk/aws-iam": "^1.64.0",
+    "@aws-cdk/aws-cloudfront-origins": "^1.64.0",
+    "@aws-cdk/aws-apigateway": "^1.64.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.64.0"
   },
   "dependencies": {
-    "change-case": "^4.1.1"
+    "change-case": "^4.1.1",
+    "busboy": "^0.3.1",
+    "sharp": "^0.26.2",
+    "mime": "^2.4.6"
   },
   "keywords": [
     "cdk",
@@ -30,5 +36,18 @@
     "aws"
   ],
   "author": "Rushi Patel <rpatel@nextfaze.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "targets": {
+    "cdk-lambda": {
+      "context": "node",
+      "includeNodeModules": {
+        "aws-sdk": false
+      },
+      "sourceMap": false,
+      "minify": false,
+      "engines": {
+        "node": ">= 12"
+      }
+    }
+  }
 }

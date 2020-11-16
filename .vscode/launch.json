@@ -18,6 +18,42 @@
       "skipFiles": ["<node_internals>/**"],
       "program": "${file}",
       "outFiles": ["${workspaceFolder}/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest All",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--runInBand"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest watch current file",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "--nolazy",
+        "node_modules/jest/bin/jest",
+        "${fileBasename}",
+        "--runInBand",
+        "--watch",
+        "--config=jest.config.js"
+      ],
+      "sourceMaps": true,
+      "disableOptimisticBPs": true,
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229,
+      "env": {
+        "NODE_ENV": "test"
+      }
     }
   ]
 }

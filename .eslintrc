@@ -12,6 +12,7 @@
     "commonjs": true
   },
   "rules": {
+    "@typescript-eslint/ban-types": ["off"],
     "@typescript-eslint/naming-convention": [
       "error",
       {

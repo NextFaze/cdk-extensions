@@ -6,3 +6,9 @@ node_modules
 *.log
 
 .env
+
+// parcel boi
+.parcel-cache
+
+// test coverage
+coverage

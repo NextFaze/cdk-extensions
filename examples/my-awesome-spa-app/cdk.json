@@ -1,0 +1,3 @@
+{
+  "app": "npx ts-node -r tsconfig-paths/register bin/my-awesome-spa-app.ts"
+}

@@ -6,7 +6,7 @@ import {
   WebApplication,
   IRequestCertificateProps,
   IWebApplicationProps,
-} from '../web-application.construct';
+} from '../constructs/web-application.construct';
 import {
   ViewerCertificate,
   SSLMethod,

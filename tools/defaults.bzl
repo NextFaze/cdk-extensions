@@ -15,14 +15,13 @@ def setup_ts_build(name, deps = [], **kwargs):
             [
                 "**/*.ts",
             ],
-            exclude = ["**/*.test.ts", "**/*.spec.ts"],
+            exclude = ["**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"],
         ),
         tsconfig = "//:tsconfig.json",
         deps = deps + [
             "@npm//@aws-cdk/core",
-            "@npm//change-case",
             "@npm//@types/node",
-
+            "@npm//aws-sdk"
         ],
         **kwargs
     )

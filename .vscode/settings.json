@@ -1,14 +1,17 @@
 {
   "cSpell.words": [
+    "Presigned",
+    "Uploader",
     "bazel",
     "bazelisk",
     "buildifier",
     "cdkx",
     "commitlint",
-    "ibazel"
+    "ibazel",
+    "passthrough",
+    "promisify"
   ],
   "editor.formatOnSave": true,
-  "bazel.buildifierPath": "/Users/rpatel/Development/Personal/cdk-extensions/node_modules/.bin/buildifier",
   "[bazel]": {
     "editor.formatOnSave": false
   }
