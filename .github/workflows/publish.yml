@@ -1,11 +1,11 @@
-name: tagged-release
+name: NPM Publish
 on:
   push:
     tags:
       - 'v*'
 
 jobs:
-  release:
+  publish:
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     runs-on: ubuntu-latest

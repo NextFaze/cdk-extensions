@@ -1,0 +1,26 @@
+name: Release by CC (Conventional Commits)
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  release:
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install
+        run: npm install
+      - name: Generate Changelog
+        run: npm run release
+      - name: Push Release
+        run: |
+          git config --gobal user.name 'CDKX Bot'
+          git config --global user.email 'cdkx-group@nextfaze.com'
+          git push --follow-tags origin master
