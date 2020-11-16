@@ -17,10 +17,12 @@ jobs:
           node-version: '14.x'
       - name: Install
         run: npm install
+      - name: Git Config
+        run: |
+          git config --global user.name 'CDKX Bot'
+          git config --global user.email 'cdkx-group@nextfaze.com'
       - name: Generate Changelog
         run: npm run release
       - name: Push Release
         run: |
-          git config --gobal user.name 'CDKX Bot'
-          git config --global user.email 'cdkx-group@nextfaze.com'
           git push --follow-tags origin master
