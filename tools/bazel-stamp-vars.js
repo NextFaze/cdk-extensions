@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execSync } from 'child_process';
+const { execSync } = require('child_process');
 
 const argsWithoutNode = process.argv.slice(1);
 process.on('uncaughtException', function () {
