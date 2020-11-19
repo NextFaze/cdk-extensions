@@ -8,18 +8,17 @@
     "type": "git",
     "url": "https://github.com/NextFaze/cdk-extensions/tree/master/packages/web-application"
   },
-  "module": "ES6",
   "peerDependencies": {
-    "@aws-cdk/core": "^1.64.0",
-    "@aws-cdk/aws-cloudfront": "^1.64.0",
-    "@aws-cdk/aws-route53": "^1.64.0",
-    "@aws-cdk/aws-s3": "^1.64.0",
-    "@aws-cdk/aws-certificatemanager": "^1.64.0",
-    "@aws-cdk/aws-ssm": "^1.64.0",
-    "@aws-cdk/aws-iam": "^1.64.0",
-    "@aws-cdk/aws-cloudfront-origins": "^1.64.0",
-    "@aws-cdk/aws-apigateway": "^1.64.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.64.0"
+    "@aws-cdk/core": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-cloudfront": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-route53": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-s3": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-certificatemanager": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-ssm": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-iam": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-cloudfront-origins": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-apigateway": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-lambda-nodejs": "0.0.0-AWS_CDK_PEER_VERSION"
   },
   "dependencies": {
     "change-case": "^4.1.1",
