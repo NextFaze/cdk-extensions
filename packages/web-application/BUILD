@@ -1,4 +1,3 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//:tools/defaults.bzl", "setup_ts_build", "setup_ts_test")
 load("//:tools/pkg.bzl", "cdkx_package")
 load("//:tools/jest.bzl", "jest_test")
