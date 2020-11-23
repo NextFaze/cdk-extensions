@@ -161,7 +161,11 @@ export function addAssetsServerApiResource(
   );
 }
 
-function getEnvSpecificHandlerConfig() {
+function getEnvSpecificHandlerConfig(): {
+  nodeModules?: string[];
+  forceDockerBundling?: boolean;
+  externalModules?: string[];
+} {
   if (process.env.NODE_ENV === 'test') {
     return {
       externalModules: ['sharp'],
