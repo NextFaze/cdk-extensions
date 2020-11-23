@@ -26,3 +26,5 @@ jobs:
       - name: Push Release
         run: |
           git push --follow-tags origin master
+      - name: Publish To NPM
+        run: npm run publish:all
