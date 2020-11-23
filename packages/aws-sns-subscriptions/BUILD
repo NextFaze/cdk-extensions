@@ -8,6 +8,10 @@ setup_ts_build(
     module_name = "~/cdkx/aws-sns-subscriptions",
     deps = [
         "@npm//@types/aws-lambda",
+        "@npm//@aws-cdk/aws-lambda",
+        "@npm//@aws-cdk/aws-lambda-nodejs",
+        "@npm//@aws-cdk/aws-sns",
+        "@npm//@aws-cdk/aws-ssm"
     ],
 )
 
