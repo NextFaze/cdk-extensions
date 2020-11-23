@@ -8,9 +8,15 @@
     "url": "https://github.com/NextFaze/cdk-extensions/tree/master/packages/aws-sns-subscriptions"
   },
   "peerDependencies": {
-    "@aws-cdk/core": "0.0.0-AWS_CDK_PEER_VERSION"
+    "@aws-cdk/core": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-lambda": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-lambda-nodejs": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-sns": "0.0.0-AWS_CDK_PEER_VERSION",
+    "@aws-cdk/aws-ssm": "0.0.0-AWS_CDK_PEER_VERSION"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@slack/web-api": "^5.13.0"
+  },
   "keywords": [
     "aws-cdk",
     "cdkx",
