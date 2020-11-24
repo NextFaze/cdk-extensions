@@ -1,3 +1,6 @@
 {
-  "app": "npx ts-node -r tsconfig-paths/register bin/my-awesome-spa-app.ts"
+  "app": "npx ts-node -r tsconfig-paths/register bin/my-awesome-spa-app.ts",
+  "context": {
+    "@aws-cdk/core:newStyleStackSynthesis": true
+  }
 }
