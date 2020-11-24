@@ -10,6 +10,7 @@ import {
 import { StringParameter } from '@aws-cdk/aws-ssm';
 import { Construct, Duration } from '@aws-cdk/core';
 import path from 'path';
+// import { Names } from '@aws-cdk/core';
 
 export interface ISlackConfigParam {
   channelId: string;
@@ -51,6 +52,9 @@ export class SlackSubscription implements ITopicSubscription {
         CONFIG_PARAM: configParam.parameterName,
       },
     });
+
+    // TODO: allow topic to invoke slack handler
+    // slackHandler.addPermission(`AllowInvoke:${Names}`);
 
     configParam.grantRead(slackHandler);
     configParam.grantWrite(slackHandler);
