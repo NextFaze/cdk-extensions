@@ -13,8 +13,12 @@ import { Construct, Duration, Names } from '@aws-cdk/core';
 import path from 'path';
 
 export interface ISlackConfigParam {
-  channelId: string;
+  channelId?: string;
   channelName: string;
+  /**
+   * @default public_channel
+   */
+  channelTypes?: string;
   authToken: string;
 }
 
@@ -33,6 +37,7 @@ export class SlackSubscription implements ITopicSubscription {
       stringValue: JSON.stringify({
         channelId: '<channel-id>',
         channelName: this.props.channelName,
+        channelType: '<channel-type>',
         authToken: '<SECURE_TOKEN>',
       } as ISlackConfigParam),
       description: 'Slack configuration parameter',
