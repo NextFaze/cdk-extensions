@@ -1,3 +1,5 @@
-// export const handler = (event: unknown) => {
-//   //TODO: implement slack sub handler
-// };
+import { SNSEvent } from 'aws-lambda';
+
+export const handler = (event: SNSEvent): void => {
+  console.log('SNS Event Received: ', JSON.stringify(event));
+};
