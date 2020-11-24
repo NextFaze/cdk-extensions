@@ -26,6 +26,6 @@ describe('AssetsServerConstruct', () => {
     });
   });
   it('should create required resources', () => {
-    expect(SynthUtils.synthesize(stack).template).toMatchSnapshot();
+    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
   });
 });
