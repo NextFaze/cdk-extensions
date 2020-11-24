@@ -1,3 +1,4 @@
+import { ServicePrincipal } from '@aws-cdk/aws-iam';
 import { Runtime } from '@aws-cdk/aws-lambda';
 import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import {
@@ -8,9 +9,8 @@ import {
   SubscriptionFilter,
 } from '@aws-cdk/aws-sns';
 import { StringParameter } from '@aws-cdk/aws-ssm';
-import { Construct, Duration } from '@aws-cdk/core';
+import { Construct, Duration, Names } from '@aws-cdk/core';
 import path from 'path';
-// import { Names } from '@aws-cdk/core';
 
 export interface ISlackConfigParam {
   channelId: string;
@@ -53,8 +53,14 @@ export class SlackSubscription implements ITopicSubscription {
       },
     });
 
-    // TODO: allow topic to invoke slack handler
-    // slackHandler.addPermission(`AllowInvoke:${Names}`);
+    // allow topic to invoke slack handler
+    slackHandler.addPermission(
+      `AllowInvoke:${Names.nodeUniqueId(topic.node)}`,
+      {
+        sourceArn: topic.topicArn,
+        principal: new ServicePrincipal('sns.amazonaws.com'),
+      }
+    );
 
     configParam.grantRead(slackHandler);
     configParam.grantWrite(slackHandler);
