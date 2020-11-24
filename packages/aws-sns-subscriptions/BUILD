@@ -11,7 +11,8 @@ setup_ts_build(
         "@npm//@aws-cdk/aws-lambda",
         "@npm//@aws-cdk/aws-lambda-nodejs",
         "@npm//@aws-cdk/aws-sns",
-        "@npm//@aws-cdk/aws-ssm"
+        "@npm//@aws-cdk/aws-ssm",
+        "@npm//@aws-cdk/aws-iam"
     ],
 )
 
