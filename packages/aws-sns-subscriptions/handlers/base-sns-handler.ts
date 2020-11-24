@@ -1,11 +1,12 @@
 import { SNSEvent, SNSMessage } from 'aws-lambda';
 
 export abstract class BaseSNSHandler {
-  protected abstract runExec(event: SNSEvent): Promise<unknown>;
+  abstract runExec(event: SNSEvent): unknown;
 
-  async run(event: SNSEvent): Promise<unknown> {
+  run(event: SNSEvent): ReturnType<this['runExec']> {
     try {
-      return this.runExec(event);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return this.runExec(event) as any;
     } catch (err) {
       // when unable to send notification via slack
       console.error(err);

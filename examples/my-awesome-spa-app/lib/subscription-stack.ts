@@ -1,6 +1,6 @@
 import { Topic } from '@aws-cdk/aws-sns';
 import { App, Stack, StackProps } from '@aws-cdk/core';
-import { SlackSubscription } from '~/cdkx/aws-sns-subscriptions/subscriptions/slack-subscription';
+import { SlackSubscription } from '~/cdkx/aws-sns-subscriptions';
 
 export type ISubscriptionStackProps = StackProps;
 

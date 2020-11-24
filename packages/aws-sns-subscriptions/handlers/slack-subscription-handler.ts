@@ -4,6 +4,16 @@ import { SSM } from 'aws-sdk';
 import { ISlackConfigParam } from '../subscriptions/slack-subscription';
 import { WebClient } from '@slack/web-api';
 import { SlackService } from './slack.service';
+import { SlackBlocksBuilder } from './slack-blocks-builder';
+
+export interface ISlackSNSMessage {
+  message: string;
+  subject: string;
+  unsubscribeUrl: string;
+  timestamp: string;
+  messageId: string;
+  topicArn: string;
+}
 
 export class SlackSubscriptionHandler extends BaseSNSHandler {
   private ssmClient: SSM;
@@ -14,7 +24,7 @@ export class SlackSubscriptionHandler extends BaseSNSHandler {
       apiVersion: '2014-11-06',
     });
   }
-  protected async runExec(event: SNSEvent): Promise<unknown> {
+  async runExec(event: SNSEvent): Promise<{ success: boolean } | undefined> {
     const configParamName = process.env.CONFIG_PARAM;
 
     if (!configParamName) {
@@ -53,16 +63,27 @@ export class SlackSubscriptionHandler extends BaseSNSHandler {
     if (!channelId) {
       // if no channel id is provided, find one and save it back in param store,
       // so subsequent runs do not need to fetch it from slack api again
-      channelId = (
-        await slackService.getChannelIdByChannelName(channelName, channelTypes)
-      )?.id;
 
-      await this.ssmClient
-        .putParameter({
-          Name: configParamName,
-          Value: JSON.stringify({ ...slackConfig, channelId }),
-        })
-        .promise();
+      const resolvedChannelId = await slackService.getChannelIdByChannelName(
+        channelName,
+        channelTypes
+      );
+
+      if (!resolvedChannelId) {
+        console.warn(
+          `Could not resolve channel id for channel ${channelId}, message will to first channel matching ${channelName}.`
+        );
+      }
+
+      if (resolvedChannelId) {
+        channelId = resolvedChannelId.id;
+        await this.ssmClient
+          .putParameter({
+            Name: configParamName,
+            Value: JSON.stringify({ ...slackConfig, channelId }),
+          })
+          .promise();
+      }
     }
 
     const {
@@ -70,23 +91,34 @@ export class SlackSubscriptionHandler extends BaseSNSHandler {
       Subject,
       UnsubscribeUrl,
       Timestamp,
-      MessageAttributes,
+      MessageId,
+      TopicArn,
     } = this.getParsedEvent(event);
 
-    // TODO: send message to slack using default template
+    const postMessageResponse = await this.webClient.chat.postMessage({
+      token: authToken,
+      channel: channelId ?? channelName,
+      text: Subject,
+      blocks: JSON.parse(
+        new SlackBlocksBuilder(channelName).getDefaultTemplate({
+          subject: Subject,
+          message: Message,
+          messageId: MessageId,
+          timestamp: Timestamp,
+          topicArn: TopicArn,
+          unsubscribeUrl: UnsubscribeUrl,
+        })
+      ),
+    });
 
-    throw new Error('Method not implemented.');
+    if (!postMessageResponse.ok) {
+      console.error(
+        'Could Not post notification to slack',
+        'Please request permissions for scope "chat:write:bot", and make sure bot is in the channel.'
+      );
+      return this.bail(postMessageResponse.error);
+    }
+
+    return { success: true };
   }
-
-  // private resolveChannelIdFromName(
-  //   name: string,
-  //   types: string,
-  //   cursor: string = ''
-  // ) {
-  //   const channelsResponse = await this.webClient.channels.list({
-  //     types,
-  //     limit: 200,
-  //     cursor,
-  //   });
-  // }
 }

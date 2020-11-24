@@ -1,1 +1,1 @@
-console.log('Init aws subs');
+export * from './subscriptions/slack-subscription';
