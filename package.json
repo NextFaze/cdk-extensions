@@ -1,7 +1,7 @@
 {
   "name": "cdk_extensions",
   "description": "One stop shop for most commonly used cdk (Cloud Development Kit) extensions",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.12.8",
