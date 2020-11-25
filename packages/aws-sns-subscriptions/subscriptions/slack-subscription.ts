@@ -42,7 +42,7 @@ export interface ISlackSubscriptionProps {
 /**
  * @summary Configures required resources to enable sns -> slack notifications.
  * Supplied Auth token must have at least "chat:write:bot" scope. When channel id is not provided,
- * additional "channels:read"  "groups:read"  "im:read"  "mpim:read" scopes are required.
+ * additional "channels:read", "groups:read", "im:read", "mpim:read" scopes are required.
  * @see https://api.slack.com/scopes
  *
  */
