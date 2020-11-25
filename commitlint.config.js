@@ -5,12 +5,13 @@ const packages = () =>
     .filter((dir) => dir.isDirectory())
     .map((dir) => dir.name);
 
-console.log(`Valid Package scopes:`, packages());
+const validScopes = ['examples', ...packages()];
+console.log(`Valid Package scopes:`, validScopes);
 
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'scope-enum': [2, 'always', packages()],
+    'scope-enum': [2, 'always', validScopes],
     'scope-case': [2, 'always', 'kebab-case'],
   },
 };
