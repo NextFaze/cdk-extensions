@@ -13,8 +13,8 @@ setup_ts_build(
         "@npm//@aws-cdk/aws-sns",
         "@npm//@aws-cdk/aws-ssm",
         "@npm//@aws-cdk/aws-iam",
-        "@npm//slack-block-builder",
-        "@npm//@slack/web-api"
+        "@npm//@slack/web-api",
+        "@npm//change-case"
     ],
 )
 
