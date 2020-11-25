@@ -136,7 +136,7 @@ test('sends notification with resolved channel id and also updates ssm parameter
       },
       {
         text: {
-          text: '````Hello from SNS!```',
+          text: '```Hello from SNS!```',
           type: 'mrkdwn',
         },
         type: 'section',
