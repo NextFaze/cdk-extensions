@@ -1,7 +1,7 @@
 import { WebClient } from '@slack/web-api';
 
 export class SlackService {
-  private webClient: WebClient;
+  webClient: WebClient;
   constructor(token: string) {
     this.webClient = new WebClient(token);
   }

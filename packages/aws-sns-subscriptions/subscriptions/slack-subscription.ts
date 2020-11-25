@@ -10,9 +10,13 @@ import {
 } from '@aws-cdk/aws-sns';
 import { StringParameter } from '@aws-cdk/aws-ssm';
 import { Construct, Duration, Names } from '@aws-cdk/core';
+import { pascalCase } from 'change-case';
 import path from 'path';
 
 export interface ISlackConfigParam {
+  /**
+   * @default channel Id will be resolved from given channel name
+   */
   channelId?: string;
   channelName: string;
   /**
@@ -22,26 +26,45 @@ export interface ISlackConfigParam {
   authToken: string;
 }
 
+/**
+ * @param channelName Channel to send notification to
+ * @param filterPolicy Optional filter policy to apply on sns target
+ */
 export interface ISlackSubscriptionProps {
+  /**
+   * @default - channel Id will be resolved from given channel name
+   */
+  channelId?: string;
   channelName: string;
   filterPolicy?: { [key: string]: SubscriptionFilter };
 }
 
+/**
+ * @summary Configures required resources to enable sns -> slack notifications.
+ * Supplied Auth token must have at least "chat:write:bot" scope. When channel id is not provided,
+ * additional "channels:read"  "groups:read"  "im:read"  "mpim:read" scopes are required.
+ * @see https://api.slack.com/scopes
+ *
+ */
 export class SlackSubscription implements ITopicSubscription {
   constructor(private props: ISlackSubscriptionProps) {}
 
   bind(topic: ITopic): TopicSubscriptionConfig {
     const scope = this._resolveScopeFromTopic(topic);
 
-    const configParam = new StringParameter(scope, 'ConfigParameter', {
-      stringValue: JSON.stringify({
-        channelId: '<channel-id>',
-        channelName: this.props.channelName,
-        channelType: '<channel-type>',
-        authToken: '<SECURE_TOKEN>',
-      } as ISlackConfigParam),
-      description: 'Slack configuration parameter',
-    });
+    const configParam = new StringParameter(
+      scope,
+      pascalCase(`${this.props.channelName}-ConfigParameter`),
+      {
+        stringValue: JSON.stringify({
+          channelId: this.props.channelId ?? '',
+          channelName: this.props.channelName,
+          channelType: 'public_channel',
+          authToken: '',
+        } as ISlackConfigParam),
+        description: 'Slack configuration parameter',
+      }
+    );
 
     const slackHandler = new NodejsFunction(scope, 'Handler', {
       runtime: Runtime.NODEJS_12_X,

@@ -1,4 +1,14 @@
-import { Blocks, Elements, Message } from 'slack-block-builder';
+import {
+  ActionsBlock,
+  Block,
+  ContextBlock,
+  DividerBlock,
+  FileBlock,
+  HeaderBlock,
+  ImageBlock,
+  InputBlock,
+  SectionBlock,
+} from '@slack/web-api';
 import { ISlackSNSMessage } from './slack-subscription-handler';
 
 export class SlackBlocksBuilder {
@@ -10,27 +20,57 @@ export class SlackBlocksBuilder {
     topicArn,
     messageId,
     unsubscribeUrl,
-  }: ISlackSNSMessage): string {
-    return Message()
-      .channel(this.channelName)
-      .text(subject)
-      .blocks(
-        // title
-        Blocks.Section({
-          text: subject,
-        }),
-        Blocks.Section({
-          text: message,
-        }),
-        Blocks.Section({
+  }: ISlackSNSMessage): (
+    | ImageBlock
+    | Block
+    | ContextBlock
+    | ActionsBlock
+    | DividerBlock
+    | SectionBlock
+    | InputBlock
+    | FileBlock
+    | HeaderBlock
+  )[] {
+    return [
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `*${subject}*`,
+        },
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `\`\`\`\`${message}\`\`\``,
+        },
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
           text: `*Timestamp:*\n${timestamp}\n*Message Id:*\n${messageId}\n*Topic:*\n${topicArn}`,
-        }),
-        Blocks.Divider(),
-        Blocks.Actions().elements(
-          Elements.Button({ text: 'Unsubscribe' }).url(unsubscribeUrl).danger()
-        )
-      )
-      .asUser()
-      .buildToJSON();
+        },
+      },
+      {
+        type: 'divider',
+      },
+      {
+        type: 'actions',
+        elements: [
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Unsubscribe',
+              emoji: true,
+            },
+            style: 'danger',
+            url: unsubscribeUrl,
+          },
+        ],
+      },
+    ];
   }
 }

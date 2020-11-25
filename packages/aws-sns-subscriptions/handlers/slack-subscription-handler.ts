@@ -2,7 +2,6 @@ import { SNSEvent } from 'aws-lambda';
 import { BaseSNSHandler } from './base-sns-handler';
 import { SSM } from 'aws-sdk';
 import { ISlackConfigParam } from '../subscriptions/slack-subscription';
-import { WebClient } from '@slack/web-api';
 import { SlackService } from './slack.service';
 import { SlackBlocksBuilder } from './slack-blocks-builder';
 
@@ -17,7 +16,6 @@ export interface ISlackSNSMessage {
 
 export class SlackSubscriptionHandler extends BaseSNSHandler {
   private ssmClient: SSM;
-  private webClient: WebClient;
   constructor() {
     super();
     this.ssmClient = new SSM({
@@ -81,6 +79,7 @@ export class SlackSubscriptionHandler extends BaseSNSHandler {
           .putParameter({
             Name: configParamName,
             Value: JSON.stringify({ ...slackConfig, channelId }),
+            Overwrite: true,
           })
           .promise();
       }
@@ -94,21 +93,25 @@ export class SlackSubscriptionHandler extends BaseSNSHandler {
       MessageId,
       TopicArn,
     } = this.getParsedEvent(event);
+    const subject =
+      !Subject || Subject === 'null' ? 'New Notification' : Subject;
 
-    const postMessageResponse = await this.webClient.chat.postMessage({
+    const defaultMessageTemplate = new SlackBlocksBuilder(
+      channelName
+    ).getDefaultTemplate({
+      subject,
+      message: Message,
+      messageId: MessageId,
+      timestamp: Timestamp,
+      topicArn: TopicArn,
+      unsubscribeUrl: UnsubscribeUrl,
+    });
+
+    const postMessageResponse = await slackService.webClient.chat.postMessage({
       token: authToken,
       channel: channelId ?? channelName,
-      text: Subject,
-      blocks: JSON.parse(
-        new SlackBlocksBuilder(channelName).getDefaultTemplate({
-          subject: Subject,
-          message: Message,
-          messageId: MessageId,
-          timestamp: Timestamp,
-          topicArn: TopicArn,
-          unsubscribeUrl: UnsubscribeUrl,
-        })
-      ),
+      text: subject,
+      blocks: defaultMessageTemplate,
     });
 
     if (!postMessageResponse.ok) {
