@@ -43,7 +43,7 @@ export class SlackBlocksBuilder {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `\`\`\`\`${message}\`\`\``,
+          text: `\`\`\`${message}\`\`\``,
         },
       },
       {
