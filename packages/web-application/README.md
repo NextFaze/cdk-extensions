@@ -1,3 +1,7 @@
 # Web Application
 
-Provisions required resources to host a static web application using serverless resources
+## Constructs
+
+### WebApplication
+
+- provision serverless resources to host SPA applications built with angular/react/vue etc.

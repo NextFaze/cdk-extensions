@@ -40,6 +40,8 @@ export class MyAwesomeSpaAppStack extends cdk.Stack {
         zoneName: zoneName,
       }
     );
+
+    // web application
     new WebApplication(this, 'CDKXExampleSPAApp', {
       aliases: webAliases,
       certificate,
@@ -51,6 +53,7 @@ export class MyAwesomeSpaAppStack extends cdk.Stack {
       binaryMediaTypes: ['*/*'],
     });
 
+    // assets server
     new AssetsServer(this, 'AssetsServer', {
       removalPolicy: RemovalPolicy.DESTROY,
       aliases: cdnAliases,

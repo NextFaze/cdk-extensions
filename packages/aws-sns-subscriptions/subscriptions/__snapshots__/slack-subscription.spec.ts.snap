@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`configures slack handler and parameter resources 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9bArtifactHashD28B8FE8": Object {
+      "Description": "Artifact hash for asset \\"06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9b\\"",
+      "Type": "String",
+    },
+    "AssetParameters06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9bS3BucketEC865584": Object {
+      "Description": "S3 bucket for asset \\"06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9b\\"",
+      "Type": "String",
+    },
+    "AssetParameters06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9bS3VersionKeyE6C6D06C": Object {
+      "Description": "S3 key for asset version \\"06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9b\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "Handler886CB40B": Object {
+      "DependsOn": Array [
+        "HandlerServiceRoleDefaultPolicyCBD0CC91",
+        "HandlerServiceRoleFCDC14AE",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9bS3BucketEC865584",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9bS3VersionKeyE6C6D06C",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters06c066185b63fd2a42fc541c087086c889744cd754cdda0db560a6d85bfcca9bS3VersionKeyE6C6D06C",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Description": "Slack subscription Handler",
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "CONFIG_PARAM": Object {
+              "Ref": "MyChannelConfigParameter092BCC61",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "HandlerServiceRoleFCDC14AE",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 180,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "HandlerAllowInvokeMyTopic0FE351D2": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "Handler886CB40B",
+            "Arn",
+          ],
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": Object {
+          "Ref": "MyTopic86869434",
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "HandlerMyTopic7B4D3835": Object {
+      "Properties": Object {
+        "Endpoint": Object {
+          "Fn::GetAtt": Array [
+            "Handler886CB40B",
+            "Arn",
+          ],
+        },
+        "Protocol": "lambda",
+        "TopicArn": Object {
+          "Ref": "MyTopic86869434",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "HandlerServiceRoleDefaultPolicyCBD0CC91": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ssm:DescribeParameters",
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+                "ssm:GetParameterHistory",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/",
+                    Object {
+                      "Ref": "MyChannelConfigParameter092BCC61",
+                    },
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "ssm:PutParameter",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/",
+                    Object {
+                      "Ref": "MyChannelConfigParameter092BCC61",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "HandlerServiceRoleDefaultPolicyCBD0CC91",
+        "Roles": Array [
+          Object {
+            "Ref": "HandlerServiceRoleFCDC14AE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "HandlerServiceRoleFCDC14AE": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyChannelConfigParameter092BCC61": Object {
+      "Properties": Object {
+        "Description": "Slack configuration parameter",
+        "Type": "String",
+        "Value": "{\\"channelId\\":\\"\\",\\"channelName\\":\\"my-channel\\",\\"channelType\\":\\"public_channel\\",\\"authToken\\":\\"\\"}",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "MyTopic86869434": Object {
+      "Type": "AWS::SNS::Topic",
+    },
+  },
+}
+`;

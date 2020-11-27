@@ -15,6 +15,9 @@ def cdkx_package(name, readme_md, data = [], deps = [], **kwargs):
         name = name,
         srcs = [readme_md, "package.json"] + data ,
         replace_with_version = "0.0.0-PLACEHOLDER",
+        substitutions = {
+            "0.0.0-AWS_CDK_PEER_VERSION": "{AWS_CDK_PEER_VERSION}",
+        },
         deps = [
             ":license_copied",
         ] + deps,
