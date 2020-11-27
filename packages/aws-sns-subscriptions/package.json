@@ -16,8 +16,7 @@
     "@aws-cdk/aws-iam": "0.0.0-AWS_CDK_PEER_VERSION"
   },
   "dependencies": {
-    "@slack/web-api": "^5.13.0",
-    "slack-block-builder": "^1.7.2"
+    "@slack/web-api": "^5.13.0"
   },
   "keywords": [
     "aws-cdk",
