@@ -20,9 +20,9 @@ jobs:
       - name: Install
         run: npm install
       - name: Generate Changelog
-        run: npm run release -- --dry-run
-      # - name: Push Release
-      #   run: |
-      #     git push --follow-tags origin master
-      # - name: Publish To NPM
-      #   run: npm run publish:all
+        run: npm run release
+      - name: Push Release
+        run: |
+          git push --follow-tags origin master
+      - name: Publish To NPM
+        run: npm run publish:all
