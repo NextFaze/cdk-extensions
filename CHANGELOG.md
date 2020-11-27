@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/NextFaze/cdk-extensions/compare/v0.1.8...v0.1.9) (2020-11-27)
+
+
+### Bug Fixes
+
+* exclude test helpers from bundeling ([25bed75](https://github.com/NextFaze/cdk-extensions/commit/25bed7559a6b49f8b372e0c62b1ab22520a63068))
+
 ### [0.1.8](https://github.com/NextFaze/cdk-extensions/compare/v0.1.5...v0.1.8) (2020-11-27)
 
 
