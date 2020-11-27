@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/NextFaze/cdk-extensions/compare/v0.1.5...v0.1.6) (2020-11-27)
+
+
+### Features
+
+* **aws-sns-subscriptions:** add slack message builder ([d6d33be](https://github.com/NextFaze/cdk-extensions/commit/d6d33bed1fa57940e5d32b6ece4d2ddd5cdd2f91))
+* **aws-sns-subscriptions:** add slack sub handler ([ac90f2c](https://github.com/NextFaze/cdk-extensions/commit/ac90f2c1f76bb7396e275c16ee100d2e039c9a6f))
+* **aws-sns-subscriptions:** add slack subscription class ([2e1f615](https://github.com/NextFaze/cdk-extensions/commit/2e1f61563efb628bfb7d980751e0e3b2f460dbc6))
+* **aws-sns-subscriptions:** allow topic to invoke slack handler ([7eb169a](https://github.com/NextFaze/cdk-extensions/commit/7eb169ac526ae3beac9d2aa59d9231eee50de816))
+* **aws-sns-subscriptions:** init aws sns subscriptions package ([5b4a7a8](https://github.com/NextFaze/cdk-extensions/commit/5b4a7a86e0bea23cd6fe5dab4083a3438136878d))
+
+
+### Docs
+
+* **aws-sns-subscriptions:** update readme ([d1fe8ae](https://github.com/NextFaze/cdk-extensions/commit/d1fe8aee838a0162e4e5966001fa9172035925c6))
+
 ### 0.1.5 (2020-11-24)
 
 ### 0.1.4 (2020-11-16)
