@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/NextFaze/cdk-extensions/compare/v0.1.9...v0.1.10) (2021-01-25)
+
+
+### Bug Fixes
+
+* incorrect path alias export ([57ded1c](https://github.com/NextFaze/cdk-extensions/commit/57ded1c7882f41b8bae7a00f5a19987e69a224d0))
+
 ### [0.1.9](https://github.com/NextFaze/cdk-extensions/compare/v0.1.8...v0.1.9) (2020-11-27)
 
 
