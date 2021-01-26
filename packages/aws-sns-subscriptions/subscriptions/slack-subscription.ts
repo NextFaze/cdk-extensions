@@ -111,13 +111,10 @@ export class SlackSubscription implements ITopicSubscription {
 
   private _getHandlerEntryPath(basePath: string): string {
     let handlerPath = basePath + '.ts';
-    fs.access(handlerPath, (err) => {
-      if (err) {
-        // no ts file return js ref
-        handlerPath = basePath + '.js';
-      }
-    });
-
+    // if no ts file return js ref
+    if (!fs.existsSync(handlerPath)) {
+      handlerPath = basePath + '.js';
+    }
     return handlerPath;
   }
 }
