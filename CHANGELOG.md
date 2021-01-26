@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://github.com/NextFaze/cdk-extensions/compare/v0.1.11...v0.1.12) (2021-01-26)
+
+
+### Bug Fixes
+
+* **aws-sns-subscriptions:** fix race condition ([225943f](https://github.com/NextFaze/cdk-extensions/commit/225943fc5d17ad29a9547c787bb321acf39bc182))
+
 ### [0.1.11](https://github.com/NextFaze/cdk-extensions/compare/v0.1.10...v0.1.11) (2021-01-26)
 
 
