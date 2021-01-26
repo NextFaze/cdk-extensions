@@ -12,6 +12,7 @@ import { StringParameter } from '@aws-cdk/aws-ssm';
 import { Construct, Duration, Names } from '@aws-cdk/core';
 import { pascalCase } from 'change-case';
 import path from 'path';
+import fs from 'fs';
 
 export interface ISlackConfigParam {
   /**
@@ -71,9 +72,11 @@ export class SlackSubscription implements ITopicSubscription {
       // slightly increase duration in case we need to \
       // scan all slack channels to find the one we are looking for
       timeout: Duration.minutes(3),
-      entry: path.resolve(
-        __dirname,
-        '../handlers/_entries/slack-subscription-handler.ts'
+      entry: this._getHandlerEntryPath(
+        path.resolve(
+          __dirname,
+          '../handlers/_entries/slack-subscription-handler'
+        )
       ),
       description: 'Slack subscription Handler',
       environment: {
@@ -104,5 +107,17 @@ export class SlackSubscription implements ITopicSubscription {
 
   private _resolveScopeFromTopic(topic: ITopic): Construct {
     return topic.node.scope as Construct;
+  }
+
+  private _getHandlerEntryPath(basePath: string): string {
+    let handlerPath = basePath + '.ts';
+    fs.access(handlerPath, (err) => {
+      if (err) {
+        // no ts file return js ref
+        handlerPath = basePath + '.js';
+      }
+    });
+
+    return handlerPath;
   }
 }
