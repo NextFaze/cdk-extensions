@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/NextFaze/cdk-extensions/compare/v0.1.10...v0.1.11) (2021-01-26)
+
+
+### Bug Fixes
+
+* **aws-sns-subscriptions:** incorrect handler path reference ([bd6bc23](https://github.com/NextFaze/cdk-extensions/commit/bd6bc23b0253da8dbd7723b71c5c9482490b8125))
+
 ### [0.1.10](https://github.com/NextFaze/cdk-extensions/compare/v0.1.9...v0.1.10) (2021-01-25)
 
 
