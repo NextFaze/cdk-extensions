@@ -16,6 +16,7 @@
     "@bazel/rollup": "^2.3.0",
     "@bazel/typescript": "^2.3.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "parcel": "^2.0.0-beta.1",
     "@parcel/transformer-typescript-tsc": "^2.0.0-alpha.3",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
