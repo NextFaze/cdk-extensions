@@ -96,7 +96,7 @@ export function addAssetsServerApiResource(
     // sharp will need to load image in memory to be able to quickly manipulate it
     memorySize: 1024,
     bundling: {
-      nodeModules: ['sharp'],
+      loader: { '.node': 'binary' },
       forceDockerBundling: process.env.NODE_ENV === 'test' ? false : true,
     },
   });
