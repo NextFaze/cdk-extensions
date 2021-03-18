@@ -6,7 +6,7 @@ import {
   PassthroughBehavior,
   RequestValidator,
 } from '@aws-cdk/aws-apigateway';
-import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
+import { BundlingOptions, NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import {
   AssetsServer,
   IAssetsServerProps,
@@ -95,7 +95,9 @@ export function addAssetsServerApiResource(
     runtime: Runtime.NODEJS_12_X,
     // sharp will need to load image in memory to be able to quickly manipulate it
     memorySize: 1024,
-    ...getEnvSpecificHandlerConfig(),
+    bundling: {
+      ...getEnvSpecificHandlerConfig(),
+    },
   });
   // this handler also takes care of creating missing resolution asset, thus it needs read + write permissions
   s3Bucket.grantReadWrite(downloadHandler);
@@ -161,19 +163,16 @@ export function addAssetsServerApiResource(
   );
 }
 
-function getEnvSpecificHandlerConfig(): {
-  nodeModules?: string[];
-  forceDockerBundling?: boolean;
-  externalModules?: string[];
-} {
+function getEnvSpecificHandlerConfig(): BundlingOptions {
   if (process.env.NODE_ENV === 'test') {
     return {
-      externalModules: ['sharp'],
+      loader: { '.node': 'binary' },
+      forceDockerBundling: false,
     };
   } else {
     return {
+      // native binaries used by sharp are platform specific, when building for production env, always install it in docker
       nodeModules: ['sharp'],
-      // linux based libs needs to be installed to lambda runtime, there for force build in docker for non-prod envs
       forceDockerBundling: true,
     };
   }

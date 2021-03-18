@@ -40,7 +40,8 @@
     "cdk-lambda": {
       "context": "node",
       "includeNodeModules": {
-        "aws-sdk": false
+        "aws-sdk": false,
+        "sharp": true
       },
       "sourceMap": false,
       "minify": false,
