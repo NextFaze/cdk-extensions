@@ -59,6 +59,7 @@
       "type": "node",
       "request": "launch",
       "name": "Jest current file",
+      "runtimeVersion": "14.16.0",
       "runtimeArgs": [
         "--inspect-brk",
         "--nolazy",

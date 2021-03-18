@@ -167,7 +167,7 @@ function getEnvSpecificHandlerConfig(): BundlingOptions {
   if (process.env.NODE_ENV === 'test') {
     return {
       loader: { '.node': 'binary' },
-      forceDockerBundling: true,
+      forceDockerBundling: false,
     };
   } else {
     return {
