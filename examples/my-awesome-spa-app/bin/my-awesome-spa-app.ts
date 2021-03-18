@@ -3,6 +3,7 @@ import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
 import { MyAwesomeSpaAppStack } from '../lib/my-awesome-spa-app-stack';
 import { SubscriptionStack } from '../lib/subscription-stack';
+import { DartApiStack } from '../lib/dart-lambda-stack';
 
 const app = new cdk.App();
 new MyAwesomeSpaAppStack(app, 'MyAwesomeSpaAppStack', {
@@ -17,6 +18,12 @@ new MyAwesomeSpaAppStack(app, 'MyAwesomeSpaAppStack', {
 });
 
 new SubscriptionStack(app, 'MySubscriptionStack', {
+  env: {
+    region: 'ap-southeast-2',
+  },
+});
+
+new DartApiStack(app, 'MyDartApiStack', {
   env: {
     region: 'ap-southeast-2',
   },

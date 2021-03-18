@@ -7,6 +7,7 @@ setup_ts_build(
     deps = [
         "//packages/web-application:library",
         "//packages/aws-sns-subscriptions:library",
+        "//packages/aws-lambda-dart:library",
         "@npm//@aws-cdk/aws-apigateway",
         "@npm//@aws-cdk/aws-sns",
         "@npm//@aws-cdk/aws-route53",
