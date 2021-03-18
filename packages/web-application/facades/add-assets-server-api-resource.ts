@@ -95,7 +95,10 @@ export function addAssetsServerApiResource(
     runtime: Runtime.NODEJS_12_X,
     // sharp will need to load image in memory to be able to quickly manipulate it
     memorySize: 1024,
-    ...getEnvSpecificHandlerConfig(),
+    bundling: {
+      nodeModules: ['sharp'],
+      forceDockerBundling: process.env.NODE_ENV === 'test' ? false : true,
+    },
   });
   // this handler also takes care of creating missing resolution asset, thus it needs read + write permissions
   s3Bucket.grantReadWrite(downloadHandler);
@@ -159,22 +162,4 @@ export function addAssetsServerApiResource(
       },
     }
   );
-}
-
-function getEnvSpecificHandlerConfig(): {
-  nodeModules?: string[];
-  forceDockerBundling?: boolean;
-  externalModules?: string[];
-} {
-  if (process.env.NODE_ENV === 'test') {
-    return {
-      externalModules: ['sharp'],
-    };
-  } else {
-    return {
-      nodeModules: ['sharp'],
-      // linux based libs needs to be installed to lambda runtime, there for force build in docker for non-prod envs
-      forceDockerBundling: true,
-    };
-  }
 }
