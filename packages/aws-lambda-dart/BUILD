@@ -12,10 +12,11 @@ setup_ts_build(
     ],
 )
 
-cdkx_package(
-    name = "aws-lambda-dart",
-    readme_md = "README.md",
-    deps = [
-        ":library"
-    ]
-)
+# skip publish
+# cdkx_package(
+#     name = "aws-lambda-dart",
+#     readme_md = "README.md",
+#     deps = [
+#         ":library"
+#     ]
+# )
