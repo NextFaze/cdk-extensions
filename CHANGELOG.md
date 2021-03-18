@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://github.com/NextFaze/cdk-extensions/compare/v0.1.12...v0.1.13) (2021-03-18)
+
+
+### Features
+
+* **aws-lambda-dart:** init lambda dart module ([0e4f7e6](https://github.com/NextFaze/cdk-extensions/commit/0e4f7e67edf7269738957a8ba487aa48b00fd208))
+
+
+### Bug Fixes
+
+* embbed binary files as base64 data instead of loading it as external modules ([f8e57dc](https://github.com/NextFaze/cdk-extensions/commit/f8e57dc0392c90c48afe87471432579d5f6aea7b))
+* parcel semver error ([99c1c82](https://github.com/NextFaze/cdk-extensions/commit/99c1c8211a2229e9c9460fb7df94eae4cf6fbc7b))
+* replace parcel bundling args with esbuild ones ([8215e54](https://github.com/NextFaze/cdk-extensions/commit/8215e54c9580d98cfca9c8a91f182b74fa3e3a40))
+
 ### [0.1.12](https://github.com/NextFaze/cdk-extensions/compare/v0.1.11...v0.1.12) (2021-01-26)
 
 
