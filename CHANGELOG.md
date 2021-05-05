@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.14](https://github.com/NextFaze/cdk-extensions/compare/v0.1.13...v0.1.14) (2021-05-05)
+
+
+### Bug Fixes
+
+* **web-application:** fix incorrect types on entity ([9803de9](https://github.com/NextFaze/cdk-extensions/commit/9803de9a45e60159c7377e4147afb7b491835be6))
+
 ### [0.1.13](https://github.com/NextFaze/cdk-extensions/compare/v0.1.12...v0.1.13) (2021-03-18)
 
 
