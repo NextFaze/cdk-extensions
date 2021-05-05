@@ -21,6 +21,11 @@ export function getViewerCertificate(
 
   let viewerCertificate = certificate as ICertificate;
   if (!isICertificate(certificate)) {
+    if (!hostedZone) {
+      throw new Error(
+        'Missing required hosted zone property. Hosted zone is required to be able to request certificate.'
+      );
+    }
     viewerCertificate = new DnsValidatedCertificate(
       scope,
       'ViewerCertificate',
