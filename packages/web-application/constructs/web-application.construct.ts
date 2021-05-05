@@ -18,8 +18,8 @@ export interface IRequestCertificateProps {
 
 export interface IWebApplicationProps {
   aliases: string[];
-  hostedZone: IHostedZone;
   certificate: ICertificate | IRequestCertificateProps;
+  hostedZone?: IHostedZone;
   domainNameRegistrar?: DOMAIN_NAME_REGISTRAR;
   defaultRootObject?: string;
   errorRootObject?: string;

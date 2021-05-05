@@ -15,10 +15,15 @@ export function addCnameRecords(
     distribution: IDistribution;
     aliases: string[];
     domainNameRegistrar?: DOMAIN_NAME_REGISTRAR;
-    hostedZone: IHostedZone;
+    hostedZone?: IHostedZone;
   }
 ): void {
   if (domainNameRegistrar === DOMAIN_NAME_REGISTRAR.AWS) {
+    if (!hostedZone) {
+      throw new Error(
+        'Missing required hosted zone configuration for AWS domain registrar.'
+      );
+    }
     aliases.forEach((alias): void => {
       new CnameRecord(scope, pascalCase(`${alias}CnameRecord`), {
         zone: hostedZone,
